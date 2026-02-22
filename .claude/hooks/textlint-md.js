@@ -16,7 +16,7 @@ process.stdin.on('end', () => {
     if (filePath && filePath.endsWith('.md')) {
       try {
         // Run textlint --fix on the markdown file
-        execSync(`npx --yes textlint --fix "${filePath}"`, {
+        execSync(`pnpm exec textlint --fix "${filePath}"`, {
           stdio: 'ignore',
         })
       } catch (_error) {

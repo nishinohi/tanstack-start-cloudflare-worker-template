@@ -22,7 +22,7 @@ pre-commit:
       priority: 2
 
     stylelint:
-      glob: '*.css'
+      glob: '**/*.css'
       run: pnpm exec stylelint --fix {staged_files}
       stage_fixed: true
       priority: 2
