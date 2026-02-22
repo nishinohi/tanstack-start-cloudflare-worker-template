@@ -20,6 +20,18 @@ importers:
       stylelint:
         specifier: ^16.26.1
         version: 16.26.1(typescript@5.9.3)
+      textlint:
+        specifier: ^15.5.0
+        version: 15.5.0(hono@4.11.7)
+      textlint-rule-preset-ja-spacing:
+        specifier: ^2.4.3
+        version: 2.4.3
+      textlint-rule-preset-ja-technical-writing:
+        specifier: ^12.0.2
+        version: 12.0.2
+      textlint-rule-preset-jtf-style:
+        specifier: ^3.0.3
+        version: 3.0.3
 
   apps/web:
     dependencies:
@@ -198,18 +210,6 @@ importers:
       stylelint-config-standard:
         specifier: ^39.0.1
         version: 39.0.1(stylelint@16.26.1(typescript@5.9.3))
-      textlint:
-        specifier: ^15.5.0
-        version: 15.5.0(hono@4.11.7)
-      textlint-rule-preset-ja-spacing:
-        specifier: ^2.4.3
-        version: 2.4.3
-      textlint-rule-preset-ja-technical-writing:
-        specifier: ^12.0.2
-        version: 12.0.2
-      textlint-rule-preset-jtf-style:
-        specifier: ^3.0.3
-        version: 3.0.3
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
