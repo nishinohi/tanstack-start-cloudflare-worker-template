@@ -23,22 +23,19 @@
 │       ├── tsconfig.json    # extends ../../tsconfig.base.json
 │       └── package.json     # name: "web"
 ├── packages/
-│   ├── math/           # 共有数学ライブラリ (@repo/math)
-│   │   └── src/index.ts  # add() 関数
-│   └── ui/             # 共有 React コンポーネント (@repo/ui)
-│       └── src/components/counter.tsx  # Counter コンポーネント
+│   └── math/           # 共有数学ライブラリ (@repo/math)
+│       └── src/index.ts  # add() 関数
 ├── pnpm-workspace.yaml
 ├── tsconfig.base.json  # 共有 TypeScript 設定
-├── package.json        # ワークスペースルート
-└── .npmrc              # public-hoist-pattern for vitest/@vitest/*
+└── package.json        # ワークスペースルート
 ```
 
 ## Monorepo 設定
 - pnpm workspace で apps/* と packages/* を管理
 - `tsconfig.base.json` で共通 TypeScript 設定を管理
 - 各パッケージの `tsconfig.json` は `../../tsconfig.base.json` を extend
-- `.npmrc`: `public-hoist-pattern[]=vitest` (jest-dom のため必須)
 - packages の `exports` は TypeScript ソース直接指定 (`"./src/index.ts"`)
+- `prettier-plugin-tailwindcss` はルート `package.json` の devDependencies に配置 (prettier がルートから解決できるように)
 
 ## コマンド (ルートから実行)
 ```bash
@@ -47,7 +44,6 @@ pnpm build         # pnpm --filter web build と同じ
 pnpm test          # 全パッケージのテスト (pnpm -r test)
 pnpm typecheck     # 全パッケージの型チェック (pnpm -r typecheck)
 pnpm --filter @repo/math test   # 特定パッケージのテスト
-pnpm --filter @repo/ui test
 ```
 
 ## Route Definition Pattern
@@ -68,14 +64,14 @@ function RouteComponent() {
 ## Server Function Pattern
 ```typescript
 import { createServerFn } from '@tanstack/react-start'
-import { drizzle } from 'drizzle-orm/d1'
-import { env } from 'cloudflare:workers'
+import { getDb } from '@/lib/server-client'
 
 export const getData = createServerFn({ method: 'GET' }).handler(async () => {
-  const db = drizzle(env.DB)
+  const db = getDb()
   return await db.select().from(myTable).all()
 })
 ```
+`getDb()` / `getAuth()` は `apps/web/src/lib/server-client.ts` のキャッシュ済みシングルトン。`drizzle(env.DB)` 直接呼び出しは避ける。
 
 ## TanStack Query Data Loading
 - Router Cache FIRST (default)

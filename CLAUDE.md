@@ -14,13 +14,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Monorepo Structure
 
-pnpm workspace monorepo with three packages:
+pnpm workspace monorepo with two packages:
 
 - **`apps/web`** — Main TanStack Start application (`web`)
-- **`packages/ui`** — Shared React components (`@repo/ui`)
 - **`packages/math`** — Shared math utilities (`@repo/math`)
 
-All root-level scripts delegate to packages via `pnpm --filter`. Package imports use workspace references (`@repo/ui`, `@repo/math`).
+All root-level scripts delegate to packages via `pnpm --filter`. Package imports use workspace references (`@repo/math`).
 
 ## Common Commands
 
@@ -209,7 +208,6 @@ apps/web/
 ├── migrations/           # Auto-generated DB migration files
 └── wrangler.jsonc        # Cloudflare environments config
 packages/
-├── ui/                   # @repo/ui — shared React components
 └── math/                 # @repo/math — shared utilities
 ```
 
