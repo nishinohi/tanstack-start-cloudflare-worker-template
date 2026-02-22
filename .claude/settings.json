@@ -1,0 +1,50 @@
+{
+    "permissions": {
+        "allow": [
+            "Bash(git add:*)",
+            "Bash(git commit:*)",
+            "Bash(git status:*)",
+            "Bash(git diff:*)",
+            "Bash(git log:*)",
+            "Bash(git grep:*)",
+            "mcp__serena"
+        ],
+        "deny": []
+    },
+    "enableAllProjectMcpServers": true,
+    "enabledMcpjsonServers": [
+        "serena"
+    ],
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Write|Edit|MultiEdit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "jq -r '.tool_response.filePath // .tool_input.file_path // empty' | xargs -I {} npx --yes prettier --write {} 2>/dev/null || true"
+                    },
+                    {
+                        "type": "command",
+                        "command": "jq -r '.tool_response.filePath // .tool_input.file_path // empty' | xargs -I {} npx --yes eslint --fix {} 2>/dev/null || true"
+                    },
+                    {
+                        "type": "command",
+                        "command": "node /Users/nishi/workspace/nishinohi/tanstack-start-cloudflare-worker-template/.claude/hooks/textlint-md.js"
+                    }
+                ]
+            }
+        ],
+        "Stop": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "node /Users/nishi/workspace/nishinohi/tanstack-start-cloudflare-worker-template/.claude/hooks/full-check.js",
+                        "timeout": 120
+                    }
+                ]
+            }
+        ]
+    }
+}
