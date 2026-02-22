@@ -8,9 +8,11 @@
   },
   "scripts": {
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16"
   }

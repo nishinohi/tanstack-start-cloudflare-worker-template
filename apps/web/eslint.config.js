@@ -12,7 +12,7 @@ export default [
   // TanStack 公式設定をベースとして使用
   // ============================================
   ...tanstackConfig,
-  globalIgnores(['.claude/*', 'worker-configuration.d.ts', './src/routeTree.gen.ts']),
+  globalIgnores(['.claude/*', 'worker-configuration.d.ts', './src/routeTree.gen.ts', 'eslint.config.js']),
   // ============================================
   // React 関連の設定
   // ============================================
