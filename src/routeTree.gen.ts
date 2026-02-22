@@ -10,34 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as EnvRouteImport } from './routes/env'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
-import { Route as DemoHonoTodosRouteImport } from './routes/demo/hono-todos'
-import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
-import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
-import { Route as DemoApiTqTodosRouteImport } from './routes/demo/api.tq-todos'
-import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
-import { Route as ApiTodosSplatRouteImport } from './routes/api/todos/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
-import { Route as DemoStartSsrStreamingSsrDbWithQueryRouteImport } from './routes/demo/start.ssr.streaming-ssr-db-with-query'
-import { Route as DemoStartSsrStreamingSsrDbRouteImport } from './routes/demo/start.ssr.streaming-ssr-db'
-import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
-import { Route as DemoStartSsrNonStreamingSsrDbRouterCacheRouteImport } from './routes/demo/start.ssr.non-streaming-ssr-db-router-cache'
-import { Route as DemoStartSsrNonStreamingSsrDbRouteImport } from './routes/demo/start.ssr.non-streaming-ssr-db'
-import { Route as DemoStartSsrNonStreamingSsrClientFetchDbRouteImport } from './routes/demo/start.ssr.non-streaming-ssr-client-fetch-db'
-import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
-import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EnvRoute = EnvRouteImport.update({
-  id: '/env',
-  path: '/env',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -45,254 +23,40 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoHonoTodosRoute = DemoHonoTodosRouteImport.update({
-  id: '/demo/hono-todos',
-  path: '/demo/hono-todos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
-  id: '/demo/start/server-funcs',
-  path: '/demo/start/server-funcs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
-  id: '/demo/start/api-request',
-  path: '/demo/start/api-request',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoApiTqTodosRoute = DemoApiTqTodosRouteImport.update({
-  id: '/demo/api/tq-todos',
-  path: '/demo/api/tq-todos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
-  id: '/demo/api/names',
-  path: '/demo/api/names',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiTodosSplatRoute = ApiTodosSplatRouteImport.update({
-  id: '/api/todos/$',
-  path: '/api/todos/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
-  id: '/demo/start/ssr/',
-  path: '/demo/start/ssr/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartSsrStreamingSsrDbWithQueryRoute =
-  DemoStartSsrStreamingSsrDbWithQueryRouteImport.update({
-    id: '/demo/start/ssr/streaming-ssr-db-with-query',
-    path: '/demo/start/ssr/streaming-ssr-db-with-query',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DemoStartSsrStreamingSsrDbRoute =
-  DemoStartSsrStreamingSsrDbRouteImport.update({
-    id: '/demo/start/ssr/streaming-ssr-db',
-    path: '/demo/start/ssr/streaming-ssr-db',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DemoStartSsrSpaModeRoute = DemoStartSsrSpaModeRouteImport.update({
-  id: '/demo/start/ssr/spa-mode',
-  path: '/demo/start/ssr/spa-mode',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartSsrNonStreamingSsrDbRouterCacheRoute =
-  DemoStartSsrNonStreamingSsrDbRouterCacheRouteImport.update({
-    id: '/demo/start/ssr/non-streaming-ssr-db-router-cache',
-    path: '/demo/start/ssr/non-streaming-ssr-db-router-cache',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DemoStartSsrNonStreamingSsrDbRoute =
-  DemoStartSsrNonStreamingSsrDbRouteImport.update({
-    id: '/demo/start/ssr/non-streaming-ssr-db',
-    path: '/demo/start/ssr/non-streaming-ssr-db',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DemoStartSsrNonStreamingSsrClientFetchDbRoute =
-  DemoStartSsrNonStreamingSsrClientFetchDbRouteImport.update({
-    id: '/demo/start/ssr/non-streaming-ssr-client-fetch-db',
-    path: '/demo/start/ssr/non-streaming-ssr-client-fetch-db',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DemoStartSsrFullSsrRoute = DemoStartSsrFullSsrRouteImport.update({
-  id: '/demo/start/ssr/full-ssr',
-  path: '/demo/start/ssr/full-ssr',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
-  id: '/demo/start/ssr/data-only',
-  path: '/demo/start/ssr/data-only',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/env': typeof EnvRoute
   '/login': typeof LoginRoute
-  '/demo/hono-todos': typeof DemoHonoTodosRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/todos/$': typeof ApiTodosSplatRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/non-streaming-ssr-client-fetch-db': typeof DemoStartSsrNonStreamingSsrClientFetchDbRoute
-  '/demo/start/ssr/non-streaming-ssr-db': typeof DemoStartSsrNonStreamingSsrDbRoute
-  '/demo/start/ssr/non-streaming-ssr-db-router-cache': typeof DemoStartSsrNonStreamingSsrDbRouterCacheRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr/streaming-ssr-db': typeof DemoStartSsrStreamingSsrDbRoute
-  '/demo/start/ssr/streaming-ssr-db-with-query': typeof DemoStartSsrStreamingSsrDbWithQueryRoute
-  '/demo/start/ssr': typeof DemoStartSsrIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/env': typeof EnvRoute
   '/login': typeof LoginRoute
-  '/demo/hono-todos': typeof DemoHonoTodosRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/todos/$': typeof ApiTodosSplatRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/non-streaming-ssr-client-fetch-db': typeof DemoStartSsrNonStreamingSsrClientFetchDbRoute
-  '/demo/start/ssr/non-streaming-ssr-db': typeof DemoStartSsrNonStreamingSsrDbRoute
-  '/demo/start/ssr/non-streaming-ssr-db-router-cache': typeof DemoStartSsrNonStreamingSsrDbRouterCacheRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr/streaming-ssr-db': typeof DemoStartSsrStreamingSsrDbRoute
-  '/demo/start/ssr/streaming-ssr-db-with-query': typeof DemoStartSsrStreamingSsrDbWithQueryRoute
-  '/demo/start/ssr': typeof DemoStartSsrIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/env': typeof EnvRoute
   '/login': typeof LoginRoute
-  '/demo/hono-todos': typeof DemoHonoTodosRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/todos/$': typeof ApiTodosSplatRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/non-streaming-ssr-client-fetch-db': typeof DemoStartSsrNonStreamingSsrClientFetchDbRoute
-  '/demo/start/ssr/non-streaming-ssr-db': typeof DemoStartSsrNonStreamingSsrDbRoute
-  '/demo/start/ssr/non-streaming-ssr-db-router-cache': typeof DemoStartSsrNonStreamingSsrDbRouterCacheRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr/streaming-ssr-db': typeof DemoStartSsrStreamingSsrDbRoute
-  '/demo/start/ssr/streaming-ssr-db-with-query': typeof DemoStartSsrStreamingSsrDbWithQueryRoute
-  '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/env'
-    | '/login'
-    | '/demo/hono-todos'
-    | '/demo/tanstack-query'
-    | '/api/auth/$'
-    | '/api/todos/$'
-    | '/demo/api/names'
-    | '/demo/api/tq-todos'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/non-streaming-ssr-client-fetch-db'
-    | '/demo/start/ssr/non-streaming-ssr-db'
-    | '/demo/start/ssr/non-streaming-ssr-db-router-cache'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr/streaming-ssr-db'
-    | '/demo/start/ssr/streaming-ssr-db-with-query'
-    | '/demo/start/ssr'
+  fullPaths: '/' | '/login' | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/env'
-    | '/login'
-    | '/demo/hono-todos'
-    | '/demo/tanstack-query'
-    | '/api/auth/$'
-    | '/api/todos/$'
-    | '/demo/api/names'
-    | '/demo/api/tq-todos'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/non-streaming-ssr-client-fetch-db'
-    | '/demo/start/ssr/non-streaming-ssr-db'
-    | '/demo/start/ssr/non-streaming-ssr-db-router-cache'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr/streaming-ssr-db'
-    | '/demo/start/ssr/streaming-ssr-db-with-query'
-    | '/demo/start/ssr'
-  id:
-    | '__root__'
-    | '/'
-    | '/env'
-    | '/login'
-    | '/demo/hono-todos'
-    | '/demo/tanstack-query'
-    | '/api/auth/$'
-    | '/api/todos/$'
-    | '/demo/api/names'
-    | '/demo/api/tq-todos'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/non-streaming-ssr-client-fetch-db'
-    | '/demo/start/ssr/non-streaming-ssr-db'
-    | '/demo/start/ssr/non-streaming-ssr-db-router-cache'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr/streaming-ssr-db'
-    | '/demo/start/ssr/streaming-ssr-db-with-query'
-    | '/demo/start/ssr/'
+  to: '/' | '/login' | '/api/auth/$'
+  id: '__root__' | '/' | '/login' | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  EnvRoute: typeof EnvRoute
   LoginRoute: typeof LoginRoute
-  DemoHonoTodosRoute: typeof DemoHonoTodosRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiTodosSplatRoute: typeof ApiTodosSplatRoute
-  DemoApiNamesRoute: typeof DemoApiNamesRoute
-  DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
-  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-  DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
-  DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
-  DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
-  DemoStartSsrNonStreamingSsrClientFetchDbRoute: typeof DemoStartSsrNonStreamingSsrClientFetchDbRoute
-  DemoStartSsrNonStreamingSsrDbRoute: typeof DemoStartSsrNonStreamingSsrDbRoute
-  DemoStartSsrNonStreamingSsrDbRouterCacheRoute: typeof DemoStartSsrNonStreamingSsrDbRouterCacheRoute
-  DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
-  DemoStartSsrStreamingSsrDbRoute: typeof DemoStartSsrStreamingSsrDbRoute
-  DemoStartSsrStreamingSsrDbWithQueryRoute: typeof DemoStartSsrStreamingSsrDbWithQueryRoute
-  DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -304,67 +68,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/env': {
-      id: '/env'
-      path: '/env'
-      fullPath: '/env'
-      preLoaderRoute: typeof EnvRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/hono-todos': {
-      id: '/demo/hono-todos'
-      path: '/demo/hono-todos'
-      fullPath: '/demo/hono-todos'
-      preLoaderRoute: typeof DemoHonoTodosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/server-funcs': {
-      id: '/demo/start/server-funcs'
-      path: '/demo/start/server-funcs'
-      fullPath: '/demo/start/server-funcs'
-      preLoaderRoute: typeof DemoStartServerFuncsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/api-request': {
-      id: '/demo/start/api-request'
-      path: '/demo/start/api-request'
-      fullPath: '/demo/start/api-request'
-      preLoaderRoute: typeof DemoStartApiRequestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/api/tq-todos': {
-      id: '/demo/api/tq-todos'
-      path: '/demo/api/tq-todos'
-      fullPath: '/demo/api/tq-todos'
-      preLoaderRoute: typeof DemoApiTqTodosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/api/names': {
-      id: '/demo/api/names'
-      path: '/demo/api/names'
-      fullPath: '/demo/api/names'
-      preLoaderRoute: typeof DemoApiNamesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/todos/$': {
-      id: '/api/todos/$'
-      path: '/api/todos/$'
-      fullPath: '/api/todos/$'
-      preLoaderRoute: typeof ApiTodosSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -374,96 +82,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/start/ssr/': {
-      id: '/demo/start/ssr/'
-      path: '/demo/start/ssr'
-      fullPath: '/demo/start/ssr'
-      preLoaderRoute: typeof DemoStartSsrIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/streaming-ssr-db-with-query': {
-      id: '/demo/start/ssr/streaming-ssr-db-with-query'
-      path: '/demo/start/ssr/streaming-ssr-db-with-query'
-      fullPath: '/demo/start/ssr/streaming-ssr-db-with-query'
-      preLoaderRoute: typeof DemoStartSsrStreamingSsrDbWithQueryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/streaming-ssr-db': {
-      id: '/demo/start/ssr/streaming-ssr-db'
-      path: '/demo/start/ssr/streaming-ssr-db'
-      fullPath: '/demo/start/ssr/streaming-ssr-db'
-      preLoaderRoute: typeof DemoStartSsrStreamingSsrDbRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/spa-mode': {
-      id: '/demo/start/ssr/spa-mode'
-      path: '/demo/start/ssr/spa-mode'
-      fullPath: '/demo/start/ssr/spa-mode'
-      preLoaderRoute: typeof DemoStartSsrSpaModeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/non-streaming-ssr-db-router-cache': {
-      id: '/demo/start/ssr/non-streaming-ssr-db-router-cache'
-      path: '/demo/start/ssr/non-streaming-ssr-db-router-cache'
-      fullPath: '/demo/start/ssr/non-streaming-ssr-db-router-cache'
-      preLoaderRoute: typeof DemoStartSsrNonStreamingSsrDbRouterCacheRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/non-streaming-ssr-db': {
-      id: '/demo/start/ssr/non-streaming-ssr-db'
-      path: '/demo/start/ssr/non-streaming-ssr-db'
-      fullPath: '/demo/start/ssr/non-streaming-ssr-db'
-      preLoaderRoute: typeof DemoStartSsrNonStreamingSsrDbRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/non-streaming-ssr-client-fetch-db': {
-      id: '/demo/start/ssr/non-streaming-ssr-client-fetch-db'
-      path: '/demo/start/ssr/non-streaming-ssr-client-fetch-db'
-      fullPath: '/demo/start/ssr/non-streaming-ssr-client-fetch-db'
-      preLoaderRoute: typeof DemoStartSsrNonStreamingSsrClientFetchDbRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/full-ssr': {
-      id: '/demo/start/ssr/full-ssr'
-      path: '/demo/start/ssr/full-ssr'
-      fullPath: '/demo/start/ssr/full-ssr'
-      preLoaderRoute: typeof DemoStartSsrFullSsrRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/data-only': {
-      id: '/demo/start/ssr/data-only'
-      path: '/demo/start/ssr/data-only'
-      fullPath: '/demo/start/ssr/data-only'
-      preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  EnvRoute: EnvRoute,
   LoginRoute: LoginRoute,
-  DemoHonoTodosRoute: DemoHonoTodosRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiTodosSplatRoute: ApiTodosSplatRoute,
-  DemoApiNamesRoute: DemoApiNamesRoute,
-  DemoApiTqTodosRoute: DemoApiTqTodosRoute,
-  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-  DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
-  DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
-  DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
-  DemoStartSsrNonStreamingSsrClientFetchDbRoute:
-    DemoStartSsrNonStreamingSsrClientFetchDbRoute,
-  DemoStartSsrNonStreamingSsrDbRoute: DemoStartSsrNonStreamingSsrDbRoute,
-  DemoStartSsrNonStreamingSsrDbRouterCacheRoute:
-    DemoStartSsrNonStreamingSsrDbRouterCacheRoute,
-  DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
-  DemoStartSsrStreamingSsrDbRoute: DemoStartSsrStreamingSsrDbRoute,
-  DemoStartSsrStreamingSsrDbWithQueryRoute:
-    DemoStartSsrStreamingSsrDbWithQueryRoute,
-  DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -6,7 +6,7 @@ import { authClient } from '@/lib/auth-client'
 import { getAuth } from '@/lib/server-client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Route as SSRIndexRoute } from '@/routes/demo/start.ssr.index'
+import { Route as IndexRoute } from '@/routes/index'
 
 // SSRでセッションチェック（既にログイン済みならリダイレクト）
 const checkSession = createServerFn({ method: 'GET' }).handler(async () => {
@@ -25,7 +25,7 @@ export const Route = createFileRoute('/login')({
   beforeLoad: async () => {
     const session = await checkSession()
     if (session) {
-      throw redirect({ to: SSRIndexRoute.to })
+      throw redirect({ to: IndexRoute.to })
     }
   },
 })
@@ -42,7 +42,7 @@ function LoginPage() {
     try {
       await authClient.signIn.social({
         provider: 'google',
-        callbackURL: search.redirect || SSRIndexRoute.to,
+        callbackURL: search.redirect || IndexRoute.to,
       })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'ログインに失敗しました')
