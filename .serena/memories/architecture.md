@@ -1,29 +1,53 @@
 # Architecture Patterns
 
-## Project Structure
+## Project Structure (Monorepo)
 ```
-src/
-├── components/        # React components (Shadcn/ui in ui/)
-│   ├── ui/           # shadcn components
-│   ├── atoms/        # Smallest primitives
-│   ├── molecules/    # Composed atoms
-│   ├── organisms/    # Complex components
-│   ├── composites/   # Cross-screen w/ domain logic
-│   └── pages/        # Screen implementations
-├── db/               # Database layer (Drizzle ORM)
-│   ├── config/       # Per-env drizzle configs
-│   ├── lib/          # DB utilities
-│   ├── schema/       # Schema definitions
-│   └── seed/         # Seed files
-├── hooks/            # Custom React hooks
-├── integrations/     # tanstack-query root provider
-├── lib/              # Utilities (utils.ts, auth-client.ts)
-├── middleware/       # Server middleware (auth.ts)
-├── routes/           # File-based routes (auto-generates routeTree.gen.ts)
-├── server/           # Reusable server functions
-├── router.tsx        # Router init
-├── test/             # Test setup
-└── styles.css        # Global styles (Tailwind CSS)
+/
+├── apps/
+│   └── web/            # TanStack Start + Cloudflare Worker アプリ
+│       ├── src/
+│       │   ├── components/   # React コンポーネント (Shadcn/ui は ui/)
+│       │   ├── db/           # Drizzle ORM レイヤー
+│       │   ├── hooks/        # カスタム React フック
+│       │   ├── integrations/ # tanstack-query root provider
+│       │   ├── lib/          # ユーティリティ (utils.ts, auth-client.ts)
+│       │   ├── middleware/   # サーバーミドルウェア (auth.ts)
+│       │   ├── routes/       # ファイルベースルート (routeTree.gen.ts を自動生成)
+│       │   ├── server/       # サーバー関数
+│       │   ├── router.tsx    # ルーター初期化
+│       │   ├── test/         # テストセットアップ
+│       │   └── styles.css    # グローバルスタイル (Tailwind CSS)
+│       ├── wrangler.jsonc
+│       ├── vite.config.ts
+│       ├── vitest.config.ts
+│       ├── tsconfig.json    # extends ../../tsconfig.base.json
+│       └── package.json     # name: "web"
+├── packages/
+│   ├── math/           # 共有数学ライブラリ (@repo/math)
+│   │   └── src/index.ts  # add() 関数
+│   └── ui/             # 共有 React コンポーネント (@repo/ui)
+│       └── src/components/counter.tsx  # Counter コンポーネント
+├── pnpm-workspace.yaml
+├── tsconfig.base.json  # 共有 TypeScript 設定
+├── package.json        # ワークスペースルート
+└── .npmrc              # public-hoist-pattern for vitest/@vitest/*
+```
+
+## Monorepo 設定
+- pnpm workspace で apps/* と packages/* を管理
+- `tsconfig.base.json` で共通 TypeScript 設定を管理
+- 各パッケージの `tsconfig.json` は `../../tsconfig.base.json` を extend
+- `.npmrc`: `public-hoist-pattern[]=vitest` (jest-dom のため必須)
+- packages の `exports` は TypeScript ソース直接指定 (`"./src/index.ts"`)
+
+## コマンド (ルートから実行)
+```bash
+pnpm dev           # pnpm --filter web dev と同じ
+pnpm build         # pnpm --filter web build と同じ
+pnpm test          # 全パッケージのテスト (pnpm -r test)
+pnpm typecheck     # 全パッケージの型チェック (pnpm -r typecheck)
+pnpm --filter @repo/math test   # 特定パッケージのテスト
+pnpm --filter @repo/ui test
 ```
 
 ## Route Definition Pattern
@@ -61,9 +85,9 @@ export const getData = createServerFn({ method: 'GET' }).handler(async () => {
 
 ## Authentication (Better Auth)
 - Config: `auth.ts` (project root) - schema generation only
-- Auth schema: `src/db/schema/auth.ts`
+- Auth schema: `apps/web/src/db/schema/auth.ts`
 - Session: Cloudflare KV via `SESSION_KV` binding
-- BASE_URL: per-env in `wrangler.jsonc`
+- BASE_URL: per-env in `apps/web/wrangler.jsonc`
 
 ## Environments
 Five environments: local, preview, develop, staging, production

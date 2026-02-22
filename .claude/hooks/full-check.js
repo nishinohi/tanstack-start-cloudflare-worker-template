@@ -1,7 +1,13 @@
 import { exec, execSync } from 'child_process'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import { promisify } from 'util'
 
 const execAsync = promisify(exec)
+
+// フックファイルは <project_root>/.claude/hooks/full-check.js にあるため
+// 2階層上がプロジェクトルートになる
+const projectRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..')
 
 // Read stdin (required for hooks)
 async function readInput() {
@@ -15,19 +21,19 @@ async function readInput() {
 // Get modified files using git
 function getModifiedFiles() {
   try {
-    // Get both staged and unstaged changes
     const staged = execSync('git diff --cached --name-only', {
       stdio: 'pipe',
       encoding: 'utf8',
+      cwd: projectRoot,
     }).trim()
 
     const unstaged = execSync('git diff --name-only', {
       stdio: 'pipe',
       encoding: 'utf8',
+      cwd: projectRoot,
     }).trim()
 
-    const files = [...new Set([...staged.split('\n'), ...unstaged.split('\n')])]
-      .filter((f) => f.length > 0)
+    const files = [...new Set([...staged.split('\n'), ...unstaged.split('\n')])].filter((f) => f.length > 0)
 
     return files
   } catch {
@@ -37,21 +43,41 @@ function getModifiedFiles() {
 
 async function runTypeCheck() {
   try {
-    await execAsync('pnpm typecheck', { encoding: 'utf8' })
+    await execAsync('pnpm -r typecheck', {
+      encoding: 'utf8',
+      cwd: projectRoot,
+    })
     return null
   } catch (error) {
     return error.stdout || error.stderr || error.message
   }
 }
 
+// モノレポ対応: apps/web のファイルは apps/web/ から ESLint を実行
 async function runESLintCheck(files) {
   if (files.length === 0) {
     return null
   }
+
+  const webAppDir = path.join(projectRoot, 'apps/web')
+
+  // apps/web のファイルを apps/web/ 相対パスに変換し、除外ファイルを除く
+  const EXCLUDED_WEB_FILES = new Set(['eslint.config.js', 'vite.config.ts', 'src/routeTree.gen.ts'])
+  const webFiles = files
+    .filter((f) => f.startsWith('apps/web/'))
+    .map((f) => f.replace('apps/web/', ''))
+    .filter((f) => !EXCLUDED_WEB_FILES.has(f))
+
+  if (webFiles.length === 0) {
+    return null
+  }
+
   try {
-    // ファイルパスをシェルセーフにエスケープ
-    const fileArgs = files.map((f) => `"${f}"`).join(' ')
-    await execAsync(`pnpm eslint ${fileArgs}`, { encoding: 'utf8' })
+    const fileArgs = webFiles.map((f) => `"${f}"`).join(' ')
+    await execAsync(`pnpm exec eslint ${fileArgs}`, {
+      encoding: 'utf8',
+      cwd: webAppDir,
+    })
     return null
   } catch (error) {
     return error.stdout || error.stderr || error.message
