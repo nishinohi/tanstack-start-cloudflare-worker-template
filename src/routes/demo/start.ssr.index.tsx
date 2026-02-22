@@ -1,0 +1,72 @@
+import { Link, createFileRoute } from '@tanstack/react-router'
+
+export const Route = createFileRoute('/demo/start/ssr/')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return (
+    <div
+      className="flex min-h-screen items-center justify-center bg-linear-to-br from-zinc-900 to-black p-4 text-white"
+      style={{
+        backgroundImage: 'radial-gradient(50% 50% at 20% 60%, #1a1a1a 0%, #0a0a0a 50%, #000000 100%)',
+      }}
+    >
+      <div className="w-full max-w-2xl rounded-xl border-8 border-black/10 bg-black/50 p-8 shadow-xl backdrop-blur-md">
+        <h1 className="mb-8 bg-linear-to-r from-pink-500 via-purple-500 to-green-400 bg-clip-text text-center text-4xl font-bold text-transparent">
+          SSR Demos
+        </h1>
+        <div className="flex flex-col gap-4">
+          <Link
+            to="/demo/start/ssr/spa-mode"
+            className="transform rounded-lg border-2 border-pink-400 bg-linear-to-r from-pink-600 to-pink-500 px-8 py-6 text-center text-2xl font-bold text-white shadow-lg transition-all hover:scale-105 hover:from-pink-700 hover:to-pink-600 hover:shadow-pink-500/50"
+          >
+            SPA Mode
+          </Link>
+          <Link
+            to="/demo/start/ssr/full-ssr"
+            className="transform rounded-lg border-2 border-purple-400 bg-linear-to-r from-purple-600 to-purple-500 px-8 py-6 text-center text-2xl font-bold text-white shadow-lg transition-all hover:scale-105 hover:from-purple-700 hover:to-purple-600 hover:shadow-purple-500/50"
+          >
+            Full SSR
+          </Link>
+          <Link
+            to="/demo/start/ssr/data-only"
+            className="transform rounded-lg border-2 border-green-400 bg-linear-to-r from-green-500 to-emerald-500 px-8 py-6 text-center text-2xl font-bold text-white shadow-lg transition-all hover:scale-105 hover:from-green-600 hover:to-emerald-600 hover:shadow-green-500/50"
+          >
+            Data Only
+          </Link>
+          <Link
+            to="/demo/start/ssr/non-streaming-ssr-client-fetch-db"
+            className="transform rounded-lg border-2 border-yellow-400 bg-linear-to-r from-yellow-500 to-amber-500 px-8 py-6 text-center text-2xl font-bold text-white shadow-lg transition-all hover:scale-105 hover:from-yellow-600 hover:to-amber-600 hover:shadow-yellow-500/50"
+          >
+            Non Streaming SSR Client Fetch DB
+          </Link>
+          <Link
+            to="/demo/start/ssr/non-streaming-ssr-db"
+            className="transform rounded-lg border-2 border-yellow-400 bg-linear-to-r from-yellow-500 to-amber-500 px-8 py-6 text-center text-2xl font-bold text-white shadow-lg transition-all hover:scale-105 hover:from-yellow-600 hover:to-amber-600 hover:shadow-yellow-500/50"
+          >
+            Non Streaming SSR DB
+          </Link>
+          <Link
+            to="/demo/start/ssr/non-streaming-ssr-db-router-cache"
+            className="transform rounded-lg border-2 border-blue-400 bg-linear-to-r from-blue-500 to-cyan-500 px-8 py-6 text-center text-2xl font-bold text-white shadow-lg transition-all hover:scale-105 hover:from-blue-600 hover:to-cyan-600 hover:shadow-blue-500/50"
+          >
+            Non Streaming SSR DB Router Cache
+          </Link>
+          <Link
+            to="/demo/start/ssr/streaming-ssr-db"
+            className="transform rounded-lg border-2 border-orange-400 bg-linear-to-r from-orange-500 to-red-500 px-8 py-6 text-center text-2xl font-bold text-white shadow-lg transition-all hover:scale-105 hover:from-orange-600 hover:to-red-600 hover:shadow-orange-500/50"
+          >
+            ⚡ Streaming SSR DB
+          </Link>
+          <Link
+            to="/demo/start/ssr/streaming-ssr-db-with-query"
+            className="transform rounded-lg border-2 border-cyan-400 bg-linear-to-r from-cyan-500 to-teal-500 px-8 py-6 text-center text-2xl font-bold text-white shadow-lg transition-all hover:scale-105 hover:from-cyan-600 hover:to-teal-600 hover:shadow-cyan-500/50"
+          >
+            ⚡ Streaming SSR DB with Query
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}

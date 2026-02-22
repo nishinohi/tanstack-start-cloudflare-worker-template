@@ -1,0 +1,106 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tanstack-start-cloudflare-worker-template",
+  "compatibility_date": "2025-09-02",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry",
+  "vars": {
+    "ENVIRONMENT": "production",
+    "BASE_URL": "https://tanstack-start-cloudflare-worker-template.tomoya0209.workers.dev",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tanstack-test",
+      "database_id": "00000000-1111-2222-3333-444444444444",
+    },
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "SESSION_KV",
+      "id": "01010101010101010101010101010101",
+    },
+  ],
+  "env": {
+    "local": {
+      "name": "tanstack-start-cloudflare-worker-template-local",
+      "vars": {
+        "ENVIRONMENT": "local",
+        "BASE_URL": "http://localhost:3000",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "tanstack-test-local",
+          "database_id": "00000000-0000-0000-0000-000000000000",
+        },
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSION_KV",
+          "id": "00000000000000000000000000000000",
+        },
+      ],
+    },
+    "preview": {
+      "name": "tanstack-start-cloudflare-worker-template-preview",
+      "vars": {
+        "ENVIRONMENT": "preview",
+        "BASE_URL": "http://localhost:4173",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "tanstack-test-preview",
+          "database_id": "00000000-0000-0000-0000-000000000000",
+        },
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSION_KV",
+          "id": "00000000000000000000000000000000",
+        },
+      ],
+    },
+    "develop": {
+      "name": "tanstack-start-cloudflare-worker-template-develop",
+      "vars": {
+        "ENVIRONMENT": "develop",
+        "BASE_URL": "https://tanstack-start-cloudflare-worker-template-develop.tomoya0209.workers.dev",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "tanstack-test-develop",
+          "database_id": "00000000-0000-0000-0000-000000000000",
+        },
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSION_KV",
+          "id": "01010101010101010101010101010101",
+        },
+      ],
+    },
+    "staging": {
+      "name": "tanstack-start-cloudflare-worker-template-staging",
+      "vars": {
+        "ENVIRONMENT": "staging",
+        "BASE_URL": "https://tanstack-start-cloudflare-worker-template-staging.tomoya0209.workers.dev",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "tanstack-test-staging",
+          "database_id": "00000000-0000-0000-0000-000000000000",
+        },
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSION_KV",
+          "id": "01010101010101010101010101010101",
+        },
+      ],
+    },
+  },
+}
