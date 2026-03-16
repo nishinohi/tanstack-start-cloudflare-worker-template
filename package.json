@@ -6,10 +6,11 @@
     "dev": "pnpm --filter web dev",
     "build": "pnpm --filter web build",
     "preview": "pnpm --filter web preview",
-    "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
     "check": "pnpm -r check",
+    "typegen:cf": "pnpm --filter web typegen:cf",
     "db:generate": "pnpm --filter web db:generate",
     "db:migrate:local": "pnpm --filter web db:migrate:local",
     "db:migrate:preview": "pnpm --filter web db:migrate:preview",
@@ -28,18 +29,20 @@
     "db:drop:prod": "pnpm --filter web db:drop:prod"
   },
   "devDependencies": {
-    "eslint": "^9.39.2",
-    "lefthook": "^2.0.13",
-    "prettier": "^3.7.4",
+    "eslint": "^9.39.4",
+    "lefthook": "^2.1.3",
+    "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "stylelint": "^16.26.1",
-    "textlint": "^15.5.0",
+    "stylelint": "^17.4.0",
+    "stylelint-config-standard": "^40.0.0",
+    "textlint": "^15.5.2",
     "textlint-rule-preset-ja-spacing": "^2.4.3",
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
-    "textlint-rule-preset-jtf-style": "^3.0.3"
+    "textlint-rule-preset-jtf-style": "^3.0.3",
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": "24.11.x"
   },
-  "packageManager": "pnpm@10.27.0+sha512.72d699da16b1179c14ba9e64dc71c9a40988cbdc65c264cb0e489db7de917f20dcf4d64d8723625f2969ba52d4b7e2a1170682d9ac2a5dcaeaab732b7e16f04a"
+  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be"
 }

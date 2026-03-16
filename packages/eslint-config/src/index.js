@@ -1,4 +1,5 @@
 // @ts-check
+import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
 /**
@@ -8,7 +9,7 @@ import tseslint from 'typescript-eslint'
  *   import { baseConfig } from '@repo/eslint-config'
  *   export default baseConfig
  */
-export const baseConfig = tseslint.config(
+export const baseConfig = defineConfig(
   tseslint.configs.recommended,
   {
     rules: {

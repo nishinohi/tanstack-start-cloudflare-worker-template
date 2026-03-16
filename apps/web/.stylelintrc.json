@@ -14,5 +14,19 @@
         "ignoreFunctions": ["theme"]
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.module.css"],
+      "rules": {
+        "selector-class-pattern": null
+      }
+    },
+    {
+      "files": ["**/styles.css"],
+      "rules": {
+        "selector-class-pattern": null
+      }
+    }
+  ]
 }

@@ -3,7 +3,6 @@ node_modules
 dist
 dist-ssr
 *.local
-count.txt
 .env*
 !**/.env.local.example
 !**/.env.example
@@ -14,8 +13,6 @@ count.txt
 .wrangler
 .output
 .vinxi
-todos.json
-**/worker-configuration.d.ts
 dummy
 /temp
 coverage

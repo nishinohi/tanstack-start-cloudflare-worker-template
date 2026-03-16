@@ -1,4 +1,3 @@
-// @ts-check
 import { tanstackConfig } from '@tanstack/eslint-config'
 
 import importPlugin from 'eslint-plugin-import-x'
@@ -12,7 +11,8 @@ export default [
   // TanStack 公式設定をベースとして使用
   // ============================================
   ...tanstackConfig,
-  globalIgnores(['.claude/*', 'worker-configuration.d.ts', './src/routeTree.gen.ts', 'eslint.config.js']),
+  // eslint.config.js 自身を TypeScript-aware ルールから除外（tsconfig に含まれないため）
+  globalIgnores(['eslint.config.js']),
   // ============================================
   // React 関連の設定
   // ============================================
@@ -190,9 +190,9 @@ export default [
       // require()の使用を禁止（ESM推奨）
       '@typescript-eslint/no-require-imports': 'error',
 
-      // 空のインターフェースを禁止
+      // 空のオブジェクト型を禁止（no-empty-interface の後継）
       // ※ 拡張ポイントとして空インターフェースが必要な場合は除外可
-      '@typescript-eslint/no-empty-interface': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'warn',
 
       // 空の関数を禁止
       // ※ noopコールバック等では必要な場合あり → 除外可
@@ -389,9 +389,17 @@ export default [
       // 生成されたファイル
       '**/*.generated.*',
       '**/routeTree.gen.ts',
+      'worker-configuration.d.ts',
+
+      // Wrangler 生成ファイル
+      '**/.wrangler/**',
 
       // ai agent
       '**/.serena/**',
+
+      // i18n (paraglide 生成ファイル - src/ と app/ の両方)
+      '**/src/paraglide/**',
+      '**/app/paraglide/**',
     ],
   },
 
@@ -420,8 +428,8 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'off',
       // テストではconsoleを許可
       'no-console': 'off',
-      // テストではマジックナンバーを許可
-      'no-magic-numbers': 'off',
+      // テストでは Array.from((_, i) => ...) などデータ生成用コールバックのネストを緩和
+      'max-nested-callbacks': ['warn', { max: 4 }],
     },
   },
 ]
