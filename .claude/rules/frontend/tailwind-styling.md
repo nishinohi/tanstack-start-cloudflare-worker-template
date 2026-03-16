@@ -1,5 +1,5 @@
 ---
-paths: src/**/*.{tsx,css}, packages/**/*.{tsx,css}
+paths: apps/web/src/**/*.{tsx,css}, packages/**/*.{tsx,css}
 ---
 
 # Tailwind CSS Styling Rules

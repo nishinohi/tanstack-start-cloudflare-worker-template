@@ -1,5 +1,5 @@
 ---
-paths: src/**/*.{tsx,ts}
+paths: apps/web/src/**/*.{tsx,ts}
 ---
 
 # Error Display Conventions

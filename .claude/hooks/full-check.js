@@ -1,13 +1,26 @@
 import { exec, execSync } from 'child_process'
+import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { promisify } from 'util'
 
 const execAsync = promisify(exec)
 
-// フックファイルは <project_root>/.claude/hooks/full-check.js にあるため
-// 2階層上がプロジェクトルートになる
-const projectRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..')
+// git rev-parse --show-toplevel でworktreeにも対応したプロジェクトルートを取得
+function getProjectRoot() {
+  try {
+    return execSync('git rev-parse --show-toplevel', {
+      stdio: 'pipe',
+      encoding: 'utf8',
+      cwd: process.cwd(),
+    }).trim()
+  } catch {
+    // フォールバック: hookファイルの場所から計算
+    return path.join(path.dirname(fileURLToPath(import.meta.url)), '../..')
+  }
+}
+
+const projectRoot = getProjectRoot()
 
 // Read stdin (required for hooks)
 async function readInput() {
@@ -33,7 +46,9 @@ function getModifiedFiles() {
       cwd: projectRoot,
     }).trim()
 
-    const files = [...new Set([...staged.split('\n'), ...unstaged.split('\n')])].filter((f) => f.length > 0)
+    const files = [...new Set([...staged.split('\n'), ...unstaged.split('\n')])]
+      .filter((f) => f.length > 0)
+      .filter((f) => fs.existsSync(path.join(projectRoot, f)))
 
     return files
   } catch {
@@ -53,30 +68,11 @@ async function runTypeCheck() {
   }
 }
 
-// モノレポ対応: apps/web のファイルは apps/web/ から ESLint を実行
-async function runESLintCheck(files) {
-  if (files.length === 0) {
-    return null
-  }
-
-  const webAppDir = path.join(projectRoot, 'apps/web')
-
-  // apps/web のファイルを apps/web/ 相対パスに変換し、除外ファイルを除く
-  const EXCLUDED_WEB_FILES = new Set(['eslint.config.js', 'vite.config.ts', 'src/routeTree.gen.ts'])
-  const webFiles = files
-    .filter((f) => f.startsWith('apps/web/'))
-    .map((f) => f.replace('apps/web/', ''))
-    .filter((f) => !EXCLUDED_WEB_FILES.has(f))
-
-  if (webFiles.length === 0) {
-    return null
-  }
-
+async function runESLintCheck() {
   try {
-    const fileArgs = webFiles.map((f) => `"${f}"`).join(' ')
-    await execAsync(`pnpm exec eslint ${fileArgs}`, {
+    await execAsync('pnpm -r lint', {
       encoding: 'utf8',
-      cwd: webAppDir,
+      cwd: projectRoot,
     })
     return null
   } catch (error) {
@@ -99,7 +95,7 @@ async function main() {
     const hasTypeScriptFiles = jstsFiles.some((f) => /\.(ts|tsx)$/.test(f))
 
     // Run type check and ESLint check in parallel
-    const checks = [runESLintCheck(jstsFiles)]
+    const checks = [runESLintCheck()]
     if (hasTypeScriptFiles) {
       checks.push(runTypeCheck())
     }

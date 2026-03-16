@@ -1,5 +1,5 @@
 ---
-paths: src/features/**/*.{ts,tsx}, src/routes/**/*.{ts,tsx}, src/lib/**/*.{ts,tsx}
+paths: apps/web/src/features/**/*.{ts,tsx}, apps/web/src/routes/**/*.{ts,tsx}, apps/web/src/lib/**/*.{ts,tsx}
 ---
 
 ## Server Function

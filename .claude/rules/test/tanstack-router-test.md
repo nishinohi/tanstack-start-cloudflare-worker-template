@@ -1,6 +1,5 @@
 ---
-paths:
-  - "src/test/**/*.{test.ts,test.tsx}"
+paths: apps/web/src/test/**/*.{test.ts,test.tsx}
 ---
 
 ## Quick Start

@@ -1,5 +1,5 @@
 ---
-paths: src/components/**/*.{ts,tsx}, src/routes/**/*.{ts,tsx}
+paths: apps/web/src/components/**/*.{ts,tsx}, apps/web/src/routes/**/*.{ts,tsx}
 ---
 
 ## Directory Structure

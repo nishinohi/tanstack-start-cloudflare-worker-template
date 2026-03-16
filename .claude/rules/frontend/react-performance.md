@@ -1,5 +1,5 @@
 ---
-paths: src/**/*.{tsx}
+paths: apps/web/src/**/*.{tsx}
 ---
 
 ## Basic Rules for Optimization
