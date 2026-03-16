@@ -40,9 +40,9 @@ export const getAuth = createServerOnlyFn(() => {
 
   const db = getDb()
 
-  cachedAuth = betterAuth({
+  const auth = betterAuth({
     secret: env.SESSION_SECRET,
-    baseURL: env.BASE_URL,
+    baseURL: import.meta.env.VITE_BASE_URL,
     database: drizzleAdapter(db, {
       provider: 'sqlite',
     }),
@@ -71,6 +71,7 @@ export const getAuth = createServerOnlyFn(() => {
         await env.SESSION_KV.delete(key)
       },
     },
-  })
-  return cachedAuth
+  }) as Auth
+  cachedAuth = auth
+  return auth
 })
