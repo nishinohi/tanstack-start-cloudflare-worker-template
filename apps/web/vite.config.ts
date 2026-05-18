@@ -5,17 +5,15 @@ import { cloudflare } from '@cloudflare/vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
 import viteReact from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import viteTsConfigPaths from 'vite-tsconfig-paths'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 const config = defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   plugins: [
     devtools(),
     cloudflare({ viteEnvironment: { name: 'ssr' } }),
-    // this is the plugin that enables path aliases
-    viteTsConfigPaths({
-      projects: ['./tsconfig.json'],
-    }),
     tailwindcss(),
     tanstackStart(),
     viteReact(),
