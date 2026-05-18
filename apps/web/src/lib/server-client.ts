@@ -58,6 +58,7 @@ export const getAuth = createServerOnlyFn(() => {
         return value
       },
       set: async (key, value, ttl) => {
+        // ttl は Better Auth が計算した値（デフォルト: 7日間 = session.expiresIn || 604800）
         if (ttl) {
           await env.SESSION_KV.put(key, value, { expirationTtl: ttl })
           return
