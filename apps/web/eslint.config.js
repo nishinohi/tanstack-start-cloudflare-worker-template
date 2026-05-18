@@ -352,8 +352,8 @@ export default [
       'import-x/no-self-import': 'error',
 
       // 循環インポートを警告
-      // ※ 大規模プロジェクトではパフォーマンス影響あり → 除外可
-      'import-x/no-cycle': 'warn',
+      // ※ パフォーマンスのため oxlint で実施（.oxlintrc.json 参照）
+      // 'import-x/no-cycle': 'warn',
 
       // 重複インポートを禁止
       // ※ prefer-inlineは指定しない（TanStackの設定でprefer-top-levelが推奨されているため）
@@ -378,6 +378,7 @@ export default [
       '**/build/**',
       '**/.output/**',
       '**/.vinxi/**',
+      '**/migrations/**',
 
       // 依存関係
       '**/node_modules/**',
@@ -389,17 +390,13 @@ export default [
       // 生成されたファイル
       '**/*.generated.*',
       '**/routeTree.gen.ts',
-      'worker-configuration.d.ts',
+      '**/worker-configuration.d.ts',
 
       // Wrangler 生成ファイル
       '**/.wrangler/**',
 
-      // ai agent
-      '**/.serena/**',
-
-      // i18n (paraglide 生成ファイル - src/ と app/ の両方)
-      '**/src/paraglide/**',
-      '**/app/paraglide/**',
+      // i18n
+      '**/apps/web/src/locales/**',
     ],
   },
 
@@ -428,6 +425,8 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'off',
       // テストではconsoleを許可
       'no-console': 'off',
+      // テストではマジックナンバーを許可
+      'no-magic-numbers': 'off',
       // テストでは Array.from((_, i) => ...) などデータ生成用コールバックのネストを緩和
       'max-nested-callbacks': ['warn', { max: 4 }],
     },

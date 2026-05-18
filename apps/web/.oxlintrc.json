@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "plugins": ["import"],
+  "rules": {
+    "import/no-cycle": "warn"
+  },
+  "ignorePatterns": [
+    "dist/**",
+    "build/**",
+    ".output/**",
+    ".vinxi/**",
+    "node_modules/**",
+    "**/*.generated.*",
+    "src/routeTree.gen.ts",
+    "worker-configuration.d.ts",
+    ".wrangler/**",
+    ".serena/**",
+    "apps/web/src/locales/**"
+  ]
+}

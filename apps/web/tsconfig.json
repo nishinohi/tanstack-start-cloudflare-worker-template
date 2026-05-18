@@ -3,6 +3,7 @@
   "include": ["**/*.ts", "**/*.tsx", "eslint.config.js"],
 
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "types": ["vite/client", "vitest/jsdom"],
     "baseUrl": ".",
     "paths": {

@@ -7,17 +7,32 @@ pre-commit:
     - merge
     - rebase
   commands:
+    eslint-web:
+      root: 'apps/web/'
+      glob: '**/*.{js,jsx,ts,tsx}'
+      exclude: 'eslint.config.js|vite.config.ts|src/routeTree.gen.ts'
+      run: pnpm exec eslint --fix {staged_files}
+      stage_fixed: true
+      priority: 1
+
+    oxlint-web:
+      root: 'apps/web/'
+      glob: '**/*.{js,jsx,ts,tsx}'
+      exclude: 'eslint.config.js|vite.config.ts|src/routeTree.gen.ts'
+      run: pnpm exec oxlint {staged_files}
+      priority: 1
+
+    eslint-math:
+      root: 'packages/math/'
+      glob: '**/*.{js,jsx,ts,tsx}'
+      run: pnpm exec eslint --fix {staged_files}
+      stage_fixed: true
+      priority: 1
+
     prettier:
       glob: '*.{js,jsx,ts,tsx,json,css,md}'
       exclude: 'apps/web/src/routeTree.gen.ts'
       run: pnpm exec prettier --write {staged_files}
-      stage_fixed: true
-      priority: 1
-
-    eslint:
-      glob: 'apps/web/*.{js,jsx,ts,tsx}|packages/**/*.{js,jsx,ts,tsx}'
-      exclude: 'apps/web/eslint.config.js|apps/web/vite.config.ts|apps/web/src/routeTree.gen.ts'
-      run: pnpm exec eslint --fix {staged_files}
       stage_fixed: true
       priority: 2
 
@@ -26,3 +41,8 @@ pre-commit:
       run: pnpm exec stylelint --fix {staged_files}
       stage_fixed: true
       priority: 2
+      
+    wrangler-types:
+      glob: 'apps/web/wrangler.jsonc'
+      run: pnpm --filter web typegen:cf && git add apps/web/worker-configuration.d.ts
+      priority: 1
