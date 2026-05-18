@@ -1,0 +1,10 @@
+dist
+worker-configuration.d.ts
+routeTree.gen.ts
+.wrangler
+.tanstack
+migrations
+project.inlang
+messages
+coverage
+app/paraglide

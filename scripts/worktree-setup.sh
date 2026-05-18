@@ -21,8 +21,8 @@ CHANGE_DIR=false
 usage() {
   echo "Usage: $0 [-c] <branch-name> [directory-name]"
   echo ""
-  echo "  branch-name     ブランチ名 (feature/ プレフィックスは自動付与)"
-  echo "  directory-name   ワークツリーのディレクトリ名 (省略時: branch-name の / を - に置換)"
+  echo "  branch-name     作成・チェックアウトするブランチ名"
+  echo "  directory-name   ワークツリーのディレクトリ名 (省略時: ブランチ名の / を - に置換)"
   echo ""
   echo "Options:"
   echo "  -c   セットアップ完了後にワークツリーディレクトリで新しいシェルを起動する"
@@ -41,9 +41,8 @@ if [[ $# -lt 1 ]]; then
   usage
 fi
 
-INPUT_NAME="$1"
-BRANCH_NAME="feature/$INPUT_NAME"
-DIR_NAME="${2:-$(echo "$INPUT_NAME" | tr '/' '-')}"
+BRANCH_NAME="$1"
+DIR_NAME="${2:-$(echo "$BRANCH_NAME" | tr '/' '-')}"
 WORKTREE_PATH="$WORKTREES_DIR/$DIR_NAME"
 
 # ----------------------------------------------------------
@@ -74,7 +73,14 @@ echo "==> pnpm install を実行中..."
 (cd "$WORKTREE_PATH" && pnpm install --frozen-lockfile)
 
 # ----------------------------------------------------------
-# 3. 環境ファイルのコピー
+# 3. workspace 依存パッケージのビルド
+# ----------------------------------------------------------
+echo ""
+echo "==> workspace パッケージをビルド中..."
+(cd "$WORKTREE_PATH" && pnpm --filter @orisei/react-maplibre build)
+
+# ----------------------------------------------------------
+# 4. 環境ファイルのコピー
 # ----------------------------------------------------------
 echo ""
 echo "==> 環境ファイルをコピー中..."
@@ -150,7 +156,7 @@ fi
 WORKTREE_COUNT=$(git -C "$MAIN_ROOT" worktree list | wc -l | tr -d ' ')
 # メインが 1 番目なので、新しいワークツリーは (count - 1) 番目
 WT_INDEX=$((WORKTREE_COUNT - 1))
-PORT=$((3000 + WT_INDEX * 10))
+PORT=$((3045 + WT_INDEX * 10))
 
 # ----------------------------------------------------------
 # 7. セットアップ完了サマリー
