@@ -59,10 +59,7 @@ export const getAuth = createServerOnlyFn(() => {
       },
       set: async (key, value, ttl) => {
         if (ttl) {
-          await env.SESSION_KV.put(key, value, {
-            expiration: Math.floor((Date.now() + 7 * 24 * 60 * 60 * 1000) / 1000),
-            expirationTtl: ttl,
-          })
+          await env.SESSION_KV.put(key, value, { expirationTtl: ttl })
           return
         }
         await env.SESSION_KV.put(key, value)
