@@ -1,5 +1,7 @@
 ---
-paths: apps/web/src/components/**/*.{ts,tsx}, apps/web/src/routes/**/*.{ts,tsx}
+paths:
+  - "apps/web/src/components/**/*.{ts,tsx}"
+  - "apps/web/src/routes/**/*.{ts,tsx}"
 ---
 
 ## Directory Structure
@@ -36,24 +38,24 @@ import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 
 import CustomerList from '@/components/pages/CustomerList'
+import { queryAllCustomers } from '@/features/customer/queries'
+
+const getAllCustomers = createServerFn({ method: 'GET' }).handler(async () => {
+  return queryAllCustomers()
+})
 
 export const Route = createFileRoute('/demo/customer-list')({
   component: RouteComponent,
-  loader: () => {
-    const customers = getAllCustomers()
+  loader: async () => {
+    const customers = await getAllCustomers()
     return { customers }
   },
 })
 
 function RouteComponent() {
-  const {customers} = Route.useLoaderData()
+  const { customers } = Route.useLoaderData()
   return <CustomerList customers={customers} />
 }
-
-const getAllCustomers = createServerFn({ method: 'GET' }).handler(async () => {
-  const db = getDb()
-  return await db.select().from(customers).all()
-})
 ```
 
 ```typescript
@@ -159,14 +161,17 @@ export const queryKeys = {
 
 Create `const.ts` when sharing constants across multiple files within a component directory or across multiple locations within the same component.
 
+> **i18n Note:** All user-facing text (labels, messages, placeholders, error messages, etc.) must be placed in `apps/web/messages/ja.json` and `en.json`, not in `const.ts`. As a result, `const.ts` is primarily for non-string constants such as numeric limits, enums, and configuration values.
+
 ### What to include in `const.ts`
 
-- Constants shared across multiple files within a component directory or across multiple locations within the same component
-  - Examples: `index.tsx` and hooks, or parent and child components
-- Identical labels, messages, and numeric values referenced in multiple locations
+- Non-string constants shared across multiple files within a component directory
+  - Examples: numeric limits, timeout values, enum-like objects, configuration objects
+- Constants referenced in multiple locations within the same component (e.g., `index.tsx` and hooks, or parent and child components)
 
 ### What NOT to include in `const.ts`
 
+- User-facing text strings (labels, messages, placeholders, error messages) → use `apps/web/messages/*.json` with Paraglide i18n
 - Constants used in only one file should be defined directly in that file
 - One-off magic numbers or strings should be defined at the top of the component file where used and not exported
 

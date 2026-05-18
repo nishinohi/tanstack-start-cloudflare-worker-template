@@ -1,5 +1,7 @@
 ---
-paths: apps/web/src/**/*.{tsx,css}, packages/**/*.{tsx,css}
+paths:
+  - "apps/web/src/**/*.{tsx,css}"
+  - "packages/**/*.{tsx,css}"
 ---
 
 # Tailwind CSS Styling Rules
@@ -18,7 +20,7 @@ paths: apps/web/src/**/*.{tsx,css}, packages/**/*.{tsx,css}
 
 ## Using Semantic Colors
 
-When specifying colors, use semantic colors defined in `src/styles.css`:
+When specifying colors, use semantic colors defined in `apps/web/src/styles.css`:
 
 ### Basic Colors
 
@@ -60,7 +62,7 @@ When specifying colors, use semantic colors defined in `src/styles.css`:
 
 ## Adding New Semantic Colors
 
-If existing colors are insufficient, add them to `src/styles.css`:
+If existing colors are insufficient, add them to `apps/web/src/styles.css`:
 
 1. Define light mode colors in `:root`
 2. Define dark mode colors in `.dark`

@@ -1,5 +1,9 @@
 ---
-paths: apps/web/src/components/**/*.{ts,tsx}, apps/web/src/routes/**/*.{ts,tsx}, apps/web/src/features/**/*.{ts,tsx}, apps/web/src/middleware/**/*.{ts,tsx}
+paths:
+  - "apps/web/src/components/**/*.{ts,tsx}"
+  - "apps/web/src/routes/**/*.{ts,tsx}"
+  - "apps/web/src/features/**/*.{ts,tsx}"
+  - "apps/web/src/middleware/**/*.{ts,tsx}"
 ---
 
 ## Route Path References

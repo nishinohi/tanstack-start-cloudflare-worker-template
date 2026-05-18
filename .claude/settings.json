@@ -1,8 +1,7 @@
 {
   "env": {
     "MAX_THINKING_TOKENS": "10000",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50"
   },
   "permissions": {
     "allow": [
@@ -22,44 +21,56 @@
       "Bash(pnpm check *)",
       "Bash(pnpm lint)",
       "Bash(pnpm lint *)",
-      "mcp__serena"
+      "Bash(pnpm db:generate)",
+      "Bash(pnpm db:migrate:local)",
+      "Bash(pnpm db:generate *)",
+      "Bash(pnpm db:migrate:local *)",
+      "Bash(pnpm --filter web test *)",
+      "Bash(pnpm --filter web lint)",
+      "Bash(pnpm --filter web check)",
+      "Bash(pnpm --filter web lint *)",
+      "Bash(pnpm --filter web check *)"
     ],
     "deny": []
   },
-    "enableAllProjectMcpServers": true,
-    "enabledMcpjsonServers": [
-        "serena"
-    ],
-    "hooks": {
-        "PostToolUse": [
-            {
-                "matcher": "Write|Edit|MultiEdit",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.(ts|tsx|js|jsx)$' | xargs -I {} sh -c 'f={}; case $f in /*) ;; *) f=$(pwd)/$f ;; esac; pnpm --filter web exec eslint --fix $f 2>/dev/null || true'"
-                    },
-                    {
-                        "type": "command",
-                        "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.(ts|tsx|js|jsx|json|md)$' | xargs -I {} pnpm exec prettier --write {} 2>/dev/null || true"
-                    },
-                    {
-                        "type": "command",
-                        "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.md$' | xargs -I {} pnpm exec textlint --fix {} 2>/dev/null || true"
-                    }
-                ]
-            }
-        ],
-        "Stop": [
-            {
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "node $CLAUDE_PROJECT_DIR/.claude/hooks/full-check.js",
-                        "timeout": 120
-                    }
-                ]
-            }
+  "enableAllProjectMcpServers": true,
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.(ts|tsx|js|jsx)$' | grep 'apps/web/' | xargs -I {} sh -c 'f={}; case $f in /*) ;; *) f=$(pwd)/$f ;; esac; pnpm --filter web exec eslint --fix $f 2>/dev/null || true'"
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.(ts|tsx|js|jsx)$' | grep 'packages/react-maplibre/' | xargs -I {} sh -c 'f={}; case $f in /*) ;; *) f=$(pwd)/$f ;; esac; pnpm --filter @orisei/react-maplibre exec eslint --fix $f 2>/dev/null || true'"
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.(ts|tsx|js|jsx|json|md)$' | xargs -I {} pnpm exec prettier --write {} 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.md$' | xargs -I {} pnpm exec textlint --fix {} 2>/dev/null || true"
+          }
         ]
-    }
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $CLAUDE_PROJECT_DIR/.claude/hooks/full-check.js",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
+  }
 }

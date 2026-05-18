@@ -1,5 +1,7 @@
 ---
-paths: apps/web/src/**/*.{css}
+paths:
+  - "apps/web/src/**/*.{css}"
+  - "packages/**/*.{css}"
 ---
 
 # Draft: CSS Code Review Checklist

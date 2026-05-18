@@ -1,5 +1,7 @@
 ---
-paths: apps/web/src/components/**/*.{ts,tsx}, apps/web/src/routes/**/*.{ts,tsx}
+paths:
+  - "apps/web/src/components/**/*.{ts,tsx}"
+  - "apps/web/src/routes/**/*.{ts,tsx}"
 ---
 
 # TanStack Router Data Loading Implementation Rules
@@ -11,6 +13,7 @@ paths: apps/web/src/components/**/*.{ts,tsx}, apps/web/src/routes/**/*.{ts,tsx}
 - Need to share/deduplicate the same data across the entire app
 - Need to persist data to browser storage
 - Need advanced cache management
+- **Screen loads server data and allows editing with continuous UI sync** (CRUD screens, drag-and-drop reorder, etc.)
 
 ---
 
@@ -60,6 +63,51 @@ function RouteComponent() {
 ---
 
 ## Using TanStack Query Together
+
+### When to Prefer TanStack Query over Router Cache
+
+If a screen loads server data and allows users to edit it with real-time UI sync (CRUD operations, drag-and-drop reorder, etc.), **use TanStack Query integration instead of `useState`**:
+
+- Router cache + `useState` approach: After a mutation, `router.invalidate()` re-runs the loader, but local `useState` initialized from loader data won't update unless a `useEffect` syncs it — leading to stale UI and unnecessary complexity.
+- TanStack Query approach: `useSuspenseQuery` subscribes directly to the cache. After mutations, `queryClient.invalidateQueries()` triggers a refetch and the component re-renders automatically — no `useState` needed for server data, and optimistic UI with `queryClient.setQueryData()` becomes straightforward.
+
+```typescript
+// ❌ Router Cache + useState (anti-pattern for editable screens)
+function RouteComponent() {
+  const { categories } = Route.useLoaderData()
+  return <CategoryList categories={categories} />
+}
+
+export default function CategoryList({ categories: initialCategories }) {
+  const [categories, setCategories] = useState(initialCategories) // only syncs once
+  // After mutation → router.invalidate() → initialCategories changes
+  // but `categories` state is stale until useEffect syncs it
+
+  useEffect(() => {
+    setCategories(initialCategories) // messy workaround
+  }, [initialCategories])
+}
+
+// ✅ TanStack Query integration (correct pattern for editable screens)
+// loader: await queryClient.ensureQueryData(categoryQueryOptions)
+// component:
+export default function CategoryList() {
+  const queryClient = useQueryClient()
+  const { data: categories } = useSuspenseQuery(categoryQueryOptions)
+
+  const createMutation = useMutation({
+    mutationFn: createCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: categoryQueryOptions.queryKey })
+    },
+  })
+
+  function handleReorder(reordered) {
+    queryClient.setQueryData(categoryQueryOptions.queryKey, reordered) // optimistic
+    reorderMutation.mutate(reordered.map((c) => c.id))
+  }
+}
+```
 
 ### Role Separation
 
@@ -136,6 +184,7 @@ function CommentsSection({ postId }: { postId: string }) {
 
 1. **Is TanStack Query needed?**
    - Data sharing/persistence/advanced cache management required → Use Query together
+   - Screen loads data and allows editing with continuous UI sync (CRUD/reorder) → Use Query together
    - Not required → Router Cache only
 
 2. **Is the data Critical or Deferred?**
