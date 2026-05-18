@@ -1,17 +1,17 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tanstack-start-cloudflare-worker-template",
+  "name": "your-app-name",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
   "vars": {
     "ENVIRONMENT": "production",
-    "BASE_URL": "https://tanstack-start-cloudflare-worker-template.tomoya0209.workers.dev",
+    "BASE_URL": "https://your-app-name.your-account.workers.dev",
   },
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "tanstack-test",
+      "database_name": "your-app-name",
       "database_id": "00000000-1111-2222-3333-444444444444",
     },
   ],
@@ -23,7 +23,7 @@
   ],
   "env": {
     "local": {
-      "name": "tanstack-start-cloudflare-worker-template-local",
+      "name": "your-app-name-local",
       "vars": {
         "ENVIRONMENT": "local",
         "BASE_URL": "http://localhost:3000",
@@ -31,7 +31,7 @@
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "tanstack-test-local",
+          "database_name": "your-app-name-local",
           "database_id": "00000000-0000-0000-0000-000000000000",
         },
       ],
@@ -43,7 +43,7 @@
       ],
     },
     "preview": {
-      "name": "tanstack-start-cloudflare-worker-template-preview",
+      "name": "your-app-name-preview",
       "vars": {
         "ENVIRONMENT": "preview",
         "BASE_URL": "http://localhost:4173",
@@ -51,7 +51,7 @@
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "tanstack-test-preview",
+          "database_name": "your-app-name-preview",
           "database_id": "00000000-0000-0000-0000-000000000000",
         },
       ],
@@ -63,15 +63,15 @@
       ],
     },
     "develop": {
-      "name": "tanstack-start-cloudflare-worker-template-develop",
+      "name": "your-app-name-develop",
       "vars": {
         "ENVIRONMENT": "develop",
-        "BASE_URL": "https://tanstack-start-cloudflare-worker-template-develop.tomoya0209.workers.dev",
+        "BASE_URL": "https://your-app-name-develop.tomoya0209.workers.dev",
       },
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "tanstack-test-develop",
+          "database_name": "your-app-name-develop",
           "database_id": "00000000-0000-0000-0000-000000000000",
         },
       ],
@@ -83,15 +83,15 @@
       ],
     },
     "staging": {
-      "name": "tanstack-start-cloudflare-worker-template-staging",
+      "name": "your-app-name-staging",
       "vars": {
         "ENVIRONMENT": "staging",
-        "BASE_URL": "https://tanstack-start-cloudflare-worker-template-staging.tomoya0209.workers.dev",
+        "BASE_URL": "https://your-app-name-staging.tomoya0209.workers.dev",
       },
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "tanstack-test-staging",
+          "database_name": "your-app-name-staging",
           "database_id": "00000000-0000-0000-0000-000000000000",
         },
       ],
