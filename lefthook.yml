@@ -19,7 +19,7 @@ pre-commit:
       root: 'apps/web/'
       glob: '**/*.{js,jsx,ts,tsx}'
       exclude: 'eslint.config.js|vite.config.ts|src/routeTree.gen.ts'
-      run: pnpm exec oxlint {staged_files}
+      run: pnpm exec oxlint --no-error-on-unmatched-pattern {staged_files}
       priority: 1
 
     eslint-math:
