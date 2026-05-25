@@ -93,7 +93,7 @@
     "typescript": "^5.9.3",
     "vite": "^8.0.14",
     "vitest": "^4.1.6",
-    "web-vitals": "^5.1.0",
+    "web-vitals": "^5.2.0",
     "wrangler": "^4.92.0"
   },
   "engines": {
