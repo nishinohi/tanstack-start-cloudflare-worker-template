@@ -200,7 +200,7 @@ components/Button.tsx (with variant prop)
 - Real-time subscription handlers
 
 **SAFE TO REMOVE:**
-- Old unused components in components/ folder
+- Old unused components in components/folder
 - Deprecated utility functions
 - Test files for deleted features
 - Commented-out code blocks

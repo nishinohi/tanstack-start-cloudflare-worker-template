@@ -98,15 +98,15 @@ These are the **canonical way** to access DB and Auth. Do not call `drizzle(env.
 
 ### Database Layer (Drizzle ORM + Cloudflare D1)
 
-- **Schema**: `apps/web/src/db/schema/` — Drizzle schema with `$inferSelect` / `$inferInsert` type exports; re-exported from `apps/web/src/db/schema/index.ts`
+- **Schema**: `apps/web/src/db/schema/` — Drizzle schema with `$inferSelect`/`$inferInsert` type exports; re-exported from `apps/web/src/db/schema/index.ts`
 - **Migrations**: `apps/web/migrations/` — Auto-generated SQL files (committed to git)
 - **Config**: `apps/web/src/db/config/drizzle-*.config.ts` — Per-environment configs using `loadD1Credentials()` from `apps/web/src/db/lib/drizzle-config-loader.ts`
 - **Access pattern**: Use `getDb()` from `@/lib/server-client`
 
 Each environment has its own D1 database in `apps/web/wrangler.jsonc`:
 
-- `local` / `preview`: Local D1 instances (preview is for local production build testing)
-- `develop` / `staging` / `production`: Remote D1 instances
+- `local`/`preview`: Local D1 instances (preview is for local production build testing)
+- `develop`/`staging`/`production`: Remote D1 instances
 
 ### Styling
 
@@ -182,9 +182,9 @@ Cloudflare bindings:
 Secret bindings (set via `.dev.vars`):
 
 - `SESSION_SECRET`: Better Auth secret
-- `CLIENT_ID` / `CLIENT_SECRET`: Google OAuth credentials
+- `CLIENT_ID`/`CLIENT_SECRET`: Google OAuth credentials
 
-Local env vars: `.dev.vars` or `.env` (not both; `.dev.vars` takes precedence). Environment-specific: `.dev.vars.local` / `.env.local`.
+Local env vars: `.dev.vars` or `.env` (not both; `.dev.vars` takes precedence). Environment-specific: `.dev.vars.local`/`.env.local`.
 
 See [docs/cloudflare-environment-setup.md](./docs/cloudflare-environment-setup.md) for full setup guide.
 

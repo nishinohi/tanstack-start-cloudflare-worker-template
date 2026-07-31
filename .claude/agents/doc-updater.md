@@ -394,7 +394,7 @@ See docs/CODEMAPS/INDEX.md for complete architecture overview.
 ## Maintenance Schedule
 
 **Weekly:**
-- Check for new files in src/ not in codemaps
+- Check for new files in src/not in codemaps
 - Verify README.md instructions work
 - Update package.json descriptions
 

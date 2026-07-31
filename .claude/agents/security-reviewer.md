@@ -384,8 +384,8 @@ console.log('User login:', {
 ```
 
 **References:**
-- OWASP: [link]
-- CWE: [number]
+- OWASP:[link]
+- CWE:[number]
 
 ---
 

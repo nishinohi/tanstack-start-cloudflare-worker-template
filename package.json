@@ -30,14 +30,14 @@
   },
   "devDependencies": {
     "eslint": "^9.39.4",
-    "lefthook": "^2.1.8",
+    "lefthook": "^2.1.9",
     "oxlint": "^1.67.0",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "stylelint": "^17.12.0",
     "stylelint-config-standard": "^40.0.0",
     "textlint": "^15.7.1",
-    "textlint-rule-preset-ja-spacing": "^2.4.3",
+    "textlint-rule-preset-ja-spacing": "^3.0.0",
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
     "textlint-rule-preset-jtf-style": "^3.0.3",
     "typescript": "^6.0.2"

@@ -13,7 +13,7 @@ paths:
 ## Mindset
 
 - When pointing out issues, always include both the "reason" and the "solution" ("This code is wrong" alone does not constitute a review).
-- `[MUST]` should primarily address: violations of specifications or coding standards / actual bugs / issues likely to become serious problems in the future / things that impede usability or accessibility. Secondary priority goes to "things that should be improved."
+- `[MUST]` should primarily address: violations of specifications or coding standards/actual bugs/issues likely to become serious problems in the future/things that impede usability or accessibility. Secondary priority goes to "things that should be improved."
 - Don't be dogmatic. Comments that are unlikely to benefit users or clients, or that don't contribute to profitability—essentially personal preferences—should be labeled as `IMO` or shared elsewhere.
   - I regularly share my thoughts on distinguishing between flex and grid, but in reviews, I generally don't comment if the behavior works correctly.
   - I use multi-keyword syntax for `display`, but since it doesn't enable anything special, I don't force it on others. In practice, I sometimes prioritize the single-keyword syntax that others are more familiar with.
@@ -54,9 +54,9 @@ paths:
     - I consider `text-box-trim` for removing half-leading within progressive enhancement scope as long as it doesn't break layouts or significantly alter appearance in unsupported environments.
   - Not suitable for progressive enhancement:
     - At-rules likely to be ignored entirely in unsupported environments, or layout features prone to significant display issues.
-    - Examples: style queries, Anchor Positioning, `place-self` for `position: absolute / fixed`, `sibling-index()` / `sibling-count()` functions, etc.
+    - Examples: style queries, Anchor Positioning, `place-self` for `position: absolute / fixed`, `sibling-index()`/`sibling-count()` functions, etc.
 - Also watch for "new specifications for existing properties" that Chrome tends to implement early. Testing only in the latest Chrome may lead to unintended discrepancies.
-  - `justify-items` / `justify-self` can be used in block layout, but currently only in Chrome. When rolling back from `grid` to `block` at breakpoints, verify that `justify-items` / `justify-self` definitions aren't left behind.
+  - `justify-items`/`justify-self` can be used in block layout, but currently only in Chrome. When rolling back from `grid` to `block` at breakpoints, verify that `justify-items`/`justify-self` definitions aren't left behind.
   - "Unit-based division" like `calc(40px / 1280px * 100vw)` is called typed arithmetic and is gaining browser support.
     - However, Firefox doesn't support it yet, and Safari only supports it from 18.2 onward, making it difficult to use. Avoid it.
     - I've seen beginners accidentally use this in accumulating posts, so pay special attention in reviews.
@@ -81,7 +81,7 @@ paths:
 
 ## Are There Unnecessary Declarations or Overrides?
 
-- The more unnecessary declarations there are, the more context-dependent it becomes when conflicting with other selectors (base CSS / layout primitives / other rules within components), leading to more cases where things don't work as expected.
+- The more unnecessary declarations there are, the more context-dependent it becomes when conflicting with other selectors (base CSS/layout primitives/other rules within components), leading to more cases where things don't work as expected.
 - Unnecessary declarations can trigger specificity battles to override them, increasing maintenance costs.
 - Writing CSS with a "let me just try adding this" approach means design decisions aren't shared, leading to implementations that can't be reproduced. Ensure you can explain "why this is necessary" for each declaration.
 
@@ -89,18 +89,18 @@ paths:
 
 - A particularly common pattern is "just throwing in `width: 100%`."
 - In principle, elements that have `display: block` applied via UA stylesheet (like `<div>` or `<p>`) naturally follow the parent element's width with the initial value (`auto`), so `width: 100%` is unnecessary in most cases.
-- Elements with `position: absolute` / `fixed` expand to fill available width when `inset: 0` is specified (except for replaced elements, etc.), so there's generally no need to add `width: 100%` except for elements like `<img>`.
+- Elements with `position: absolute`/`fixed` expand to fill available width when `inset: 0` is specified (except for replaced elements, etc.), so there's generally no need to add `width: 100%` except for elements like `<img>`.
 - `height: 100%` only works as expected when "the parent element's height is explicitly defined" due to infinite loop prevention. Suggested values like `min-height` don't work.
   - As mentioned later, explicit height specifications themselves can be anti-patterns, so avoid careless `height` fixes.
   - Flex/grid items can fill height via stretch without writing `height: 100%`, making it often unnecessary.
-- `width: 100%` / `height: 100%` aren't just meaningless—they can trigger unintended bugs due to browser differences.
+- `width: 100%`/`height: 100%` aren't just meaningless—they can trigger unintended bugs due to browser differences.
   - Past examples: In Safari, `width: 100%` on child elements of `<summary>` with active `list-style-type` causes unnatural line breaks; in Firefox, `height: 100%` on subgrid elements can cause unnatural compression.
   - There's also overflow risk when rolling back `box-sizing` to initial value (e.g., when setting `max-width` without including `padding`) or when horizontal margins are unintentionally applied.
 - Use `width: 100%` only for "targets with clear necessity," such as replaced elements that don't naturally expand even with `display: block` (e.g., `<img>`) or form parts (e.g., `<button>`).
   - When applying `width: 100%` to elements with `inline` outer display type like `inline-block` or `inline-flex`, consider changing to `block` outer display type. This also prevents the bottom gap caused by `vertical-align`'s initial value `baseline`.
 - If you just want to match children to parent height, simply applying `display: grid` to the parent often achieves this through `stretch`.
   - This method works with `min-height` too, making it easier to avoid the "fixed height" anti-pattern.
-- When using Tailwind, check if `w-full` / `h-full` is applied to everything. AI-generated output particularly tends to overuse these.
+- When using Tailwind, check if `w-full`/`h-full` is applied to everything. AI-generated output particularly tends to overuse these.
 - `100%` as a fallback like `width: min(320px, 100%)` is fine. However, watch out for horizontal margins in this case.
   - Generally, explicit horizontal spacing should be handled with parent's `padding`.
 
@@ -108,7 +108,7 @@ paths:
 
 - While shorthand is convenient, note that longhand settings can be unintentionally reset by later shorthand declarations.
 - Example: `background: white` can reset not just `background-color` but other background sub-properties to defaults. This can break background images, sizes, etc., set elsewhere, leading to accidents.
-- Many people learn `margin: 0 auto` / `margin: auto` for horizontal centering, but these are equivalent to overwriting "top and bottom margins that don't need to be touched" to `0` / `auto`.
+- Many people learn `margin: 0 auto`/`margin: auto` for horizontal centering, but these are equivalent to overwriting "top and bottom margins that don't need to be touched" to `0`/`auto`.
   - This particularly conflicts with flow layout introduced in Every Layout, canceling out the intended `margin` from flow.
   - As an alternative, suggest `margin-inline: auto` which only centers the inline axis.
 - Also watch for shorthand like `flex` where initial values map to different values. I've seen posts like "I don't know what's 1 in `flex: 1`, so I'll use `flex-grow: 1`," but `flex: 1` sets `flex-basis` to 0, so they're different.
@@ -120,12 +120,12 @@ paths:
 
 ### Are Default Values Being Unnecessarily Re-specified?
 
-- "Default" here collectively refers to CSS initial values / UA stylesheet values / reset CSS values / base CSS values.
+- "Default" here collectively refers to CSS initial values/UA stylesheet values/reset CSS values/base CSS values.
 - Example: Check if things like `margin: 0` or `display: block` on `<div>` are being written ad-hoc. If the intent is unclear, it's often a sign of inconsistent design.
   - If the goal is "remove top margin only on the first element," suggest using `:not(:first-child)` or owl selector to "not apply `margin` only to the first element."
-- When rolling back values to default at breakpoints, recommend using `unset` / `initial` / `revert` / `revert-layer` as IMO to clarify which level you want to return to.
+- When rolling back values to default at breakpoints, recommend using `unset`/`initial`/`revert`/`revert-layer` as IMO to clarify which level you want to return to.
   - However, since the CSS initial value of `display` is uniformly `inline` regardless of whether it's `<div>` or `<p>`, this requires foundational knowledge, so adjust feedback intensity based on reviewee's proficiency.
-- Base typography defined on `:root` / `body` should use inheritance as a rule. Minimize local re-specification.
+- Base typography defined on `:root`/`body` should use inheritance as a rule. Minimize local re-specification.
 
 ## Check for "Heavy Declarations" in Global CSS
 
@@ -143,7 +143,7 @@ paths:
   }
 ```
 
-- The problem is high specificity. `a` (type selector) + `:link` / `:visited` (pseudo-class) gives specificity of 0.1.1, which a single class can't override.
+- The problem is high specificity. `a` (type selector) + `:link`/`:visited` (pseudo-class) gives specificity of 0.1.1, which a single class can't override.
   - This leads to meaningless selector combinations to increase specificity just to change link color, or worst case, adding `!important`, degrading maintainability.
 - For new projects, first consider introducing cascade layers (`@layer`).
   - With clear layer design, specificity battles are less likely even with selectors like above.
@@ -159,14 +159,14 @@ paths:
 
 ### Are Destructive Properties Specified in Base CSS?
 
-- Properties involved in layout like `display` / `position` / `margin` are very sensitive and more destructive than color or typography properties.
+- Properties involved in layout like `display`/`position`/`margin` are very sensitive and more destructive than color or typography properties.
 - As an extreme example, you can understand why these approaches are clearly dangerous:
   - Applying `display: flex` to all `div` because flex is used frequently
   - Applying `position: relative` to universal selector because specifying relative parent for `position: absolute` is tedious
 - While I haven't seen implementations quite that extreme, in practice, things like the following can sneak in:
   - Making all `a` elements `inline-block`
   - Specifying `max-width` on `p`
-- What to define (or not) for layout properties varies by context. If layout definitions exist in base styles, there's high risk of frequent `unset` / `revert` in different contexts or unintended bugs.
+- What to define (or not) for layout properties varies by context. If layout definitions exist in base styles, there's high risk of frequent `unset`/`revert` in different contexts or unintended bugs.
 - After establishing minimum assumptions in reset CSS, only carefully define layout properties when further flattening is needed. Communicate to avoid unusual base definitions.
 
 ### Are There Accessibility-Impairing Declarations?
@@ -233,7 +233,7 @@ paths:
 ### Is Component Abstraction Being Over-Pursued?
 
 - In the Monster Hunter series I play, Rathalos exists as an iconic monster.
-- Besides the original species, Rathalos has subspecies / rare species / deviant species / tempered / apex variants, etc. Though they may look like color swaps, their attack patterns / elemental weaknesses / habitats / drop materials, and the weapons/armor you can craft are completely different.
+- Besides the original species, Rathalos has subspecies/rare species/deviant species/tempered/apex variants, etc. Though they may look like color swaps, their attack patterns/elemental weaknesses/habitats/drop materials, and the weapons/armor you can craft are completely different.
 - A common mistake is grouping these variants as "variations" and defining them as a single "Rathalos" block. Treating different things as one block can't maintain functional identity, leading to unnecessary branching that makes the block complex and bloated, harder to maintain. Furthermore, even if rare species or apex become unnecessary later, they're hard to discard.
 - In web terms, cards are similar. Even if they look alike, "product cards" and "article cards" have different roles and contained content. Grouping them as "card" can cause the same tragedy.
 - Don't unify based solely on "appearance" or "general category"—add whether they're functionally identical as a criterion. Abstraction makes batch changes easier but also changes things you don't want to change together. Accept some abstraction limits and aim for designs where unnecessary parts can be discarded.
@@ -246,9 +246,9 @@ paths:
 - Examples of properties that can be external-related layouts:
   - `margin` is external-related since it depends on surrounding relationships. This is why "don't put `margin` on components" is often said.
   - `position: absolute` depends on a relative parent to work. Additionally, `inset` defines distance from the relative parent, making it external-related.
-  - Properties that work with parent specifications: `flex` / `grid-area` / `justify-self` / `align-self`, etc.
-  - If the component itself holds `width` / `height`, versatility decreases, and in most cases the parent should control these, so treat them as external-related in principle.
-  - `min-width` / `max-width` can change nature by context. If there's a component-specific rule like "this component needs at least this size" or "must not expand beyond this," it's internal-related. But if determined by parent relationship like "max 50% of parent element," it's external-related.
+  - Properties that work with parent specifications: `flex`/`grid-area`/`justify-self`/`align-self`, etc.
+  - If the component itself holds `width`/`height`, versatility decreases, and in most cases the parent should control these, so treat them as external-related in principle.
+  - `min-width`/`max-width` can change nature by context. If there's a component-specific rule like "this component needs at least this size" or "must not expand beyond this," it's internal-related. But if determined by parent relationship like "max 50% of parent element," it's external-related.
   - `subgrid` is "internal-related" while also having "external-related" nature since it assumes the parent is `grid`. Cards using `subgrid` should include the element specifying the `grid` container as part of the component.
 - However, there are exceptions:
   - Elements applying `position: fixed` like modals are viewport-based, and since they clearly belong to the viewport, allowing external-related layout on the component side is acceptable (there are also circumstances making it hard to manipulate from the viewport level).
