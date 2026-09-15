@@ -3,3 +3,6 @@ pnpm-lock.yaml
 yarn.lock
 .claude/*
 .serena
+# 生成物（prettier をリポジトリルートから実行したときに整形されないようにする）
+worker-configuration.d.ts
+routeTree.gen.ts
