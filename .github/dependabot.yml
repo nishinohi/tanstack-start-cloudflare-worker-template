@@ -9,6 +9,12 @@ updates:
       day: 'monday'
       time: '09:00'
       timezone: 'Asia/Tokyo'
+    # 公開直後の乗っ取りバージョンを踏まないよう待機期間を設ける
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
     open-pull-requests-limit: 10
     groups:
       # Group TanStack packages together
@@ -64,6 +70,12 @@ updates:
       day: 'monday'
       time: '09:00'
       timezone: 'Asia/Tokyo'
+    # 公開直後の乗っ取りバージョンを踏まないよう待機期間を設ける
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
     labels:
       - 'dependencies'
       - 'github-actions'
