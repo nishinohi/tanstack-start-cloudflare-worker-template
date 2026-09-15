@@ -196,3 +196,13 @@ function CommentsSection({ postId }: { postId: string }) {
    - Set `staleTime` considering update frequency and fetch cost
    - Shorten `gcTime` for sensitive data
    - Uncertain → **Ask the user**
+
+---
+
+## TanStack Query Setup
+
+The query client lives in `apps/web/src/integrations/tanstack-query/`:
+
+- `root-provider.tsx` exports `getContext()` and `Provider` for query client setup
+- `devtools.tsx` holds the query devtools configuration
+- The query client is handed to routes through the router context (type: `MyRouterContext`)
