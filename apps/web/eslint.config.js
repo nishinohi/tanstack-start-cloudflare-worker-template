@@ -1,4 +1,6 @@
 import { tanstackConfig } from '@tanstack/eslint-config'
+import queryPlugin from '@tanstack/eslint-plugin-query'
+import routerPlugin from '@tanstack/eslint-plugin-router'
 
 import importPlugin from 'eslint-plugin-import-x'
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
@@ -13,6 +15,66 @@ export default [
   ...tanstackConfig,
   // eslint.config.js 自身を TypeScript-aware ルールから除外（tsconfig に含まれないため）
   globalIgnores(['eslint.config.js']),
+
+  // ============================================
+  // TanStack Router / Query 公式ルール
+  // ============================================
+  {
+    // ルーター/クエリの API を使うのは src 配下の TS/TSX だけなので、
+    // 他のプラグインと同じく対象を .ts/.tsx に揃える
+    files: ['**/*.{ts,tsx}'],
+    plugins: {
+      '@tanstack/router': routerPlugin,
+      '@tanstack/query': queryPlugin,
+    },
+    rules: {
+      // -----------------------------------------
+      // TanStack Router
+      // -----------------------------------------
+
+      // createFileRoute 等に渡すオブジェクトのプロパティ順を強制する。
+      // params/validateSearch → loaderDeps → context → beforeLoad → loader の順でないと
+      // 後続プロパティの型推論が壊れる（loader の context が any に落ちる等）ため、
+      // 公式の推奨 warn ではなく error にして機械的に守る。
+      // 正しい順序の一覧は公式ドキュメント参照:
+      // https://tanstack.com/router/latest/docs/eslint/create-route-property-order
+      '@tanstack/router/create-route-property-order': 'error',
+
+      // ファイルパスの $param とコード側のパラメータ名の不一致を検出する
+      '@tanstack/router/route-param-names': 'error',
+
+      // -----------------------------------------
+      // TanStack Query
+      // -----------------------------------------
+
+      // queryKey に queryFn が参照する値が含まれているかを検査する（キャッシュ汚染の防止）
+      '@tanstack/query/exhaustive-deps': 'error',
+
+      // QueryClient をレンダーごとに作り直していないかを検査する
+      '@tanstack/query/stable-query-client': 'error',
+
+      // useQuery の戻り値を rest 展開すると全プロパティを購読して再レンダーが増えるため禁止
+      '@tanstack/query/no-rest-destructuring': 'warn',
+
+      // useQuery/useMutation の戻り値を hooks の依存配列に入れるのを禁止（毎回新しい参照になる）
+      '@tanstack/query/no-unstable-deps': 'error',
+
+      // useInfiniteQuery のプロパティ順を強制（型推論が壊れるため）
+      '@tanstack/query/infinite-query-property-order': 'error',
+
+      // useMutation のプロパティ順を強制（型推論が壊れるため）
+      '@tanstack/query/mutation-property-order': 'error',
+
+      // queryFn が void を返す（= undefined をキャッシュする）のを禁止
+      '@tanstack/query/no-void-query-fn': 'error',
+
+      // queryKey と queryFn を呼び出し側に直書きせず queryOptions() に同居させる。
+      // キーと取得処理が離れると invalidateQueries / setQueryData のキーだけがずれても
+      // 型では気付けず、取り違えたキャッシュが返る（recommended-strict のみ収録）
+      '@tanstack/query/prefer-query-options': 'error',
+    },
+  },
+
   // ============================================
   // React 関連の設定
   // ============================================
