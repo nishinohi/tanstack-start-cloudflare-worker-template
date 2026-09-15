@@ -1,5 +1,17 @@
 # Lefthook configuration for TanStack Start project
 # https://lefthook.dev/configuration/
+#
+# 【exclude に生成物を並べている理由】
+# oxlint は「渡したパスが全部 ignore 対象だった」とき "No files found to lint" で **exit 1** する
+# （eslint は警告を出して exit 0 なので、この罠は oxlint 側だけにある）。
+# つまり apps/web/.oxlintrc.json の ignorePatterns に載っているファイルだけをステージして
+# コミットすると、lint する物が何も無いのにフックが落ちてコミットできない。
+# 実際に wrangler.jsonc + worker-configuration.d.ts だけのコミットがこれで止まった。
+#
+# そのため .oxlintrc.json の ignorePatterns のうち **git 管理下にあるもの**は、ここの exclude にも
+# 同じものを並べて oxlint へ渡さないようにしている（paraglide の生成物は .gitignore 済みなので
+# ステージされることがなく、並べる必要がない）。
+# ignorePatterns に追跡対象のファイルを足すときは、ここにも足すこと。
 
 pre-commit:
   parallel: true
@@ -10,7 +22,12 @@ pre-commit:
     eslint-web:
       root: 'apps/web/'
       glob: '**/*.{js,jsx,ts,tsx}'
-      exclude: 'eslint.config.js|vite.config.ts|src/routeTree.gen.ts'
+      exclude:
+        - '**/eslint.config.js'
+        - '**/vite.config.ts'
+        # ここから下は生成物（.oxlintrc.json の ignorePatterns と対で維持する。冒頭のコメント参照）
+        - '**/routeTree.gen.ts'
+        - '**/worker-configuration.d.ts'
       run: pnpm exec eslint --fix {staged_files}
       stage_fixed: true
       priority: 1
@@ -18,10 +35,17 @@ pre-commit:
     oxlint-web:
       root: 'apps/web/'
       glob: '**/*.{js,jsx,ts,tsx}'
-      exclude: 'eslint.config.js|vite.config.ts|src/routeTree.gen.ts'
-      run: pnpm exec oxlint --no-error-on-unmatched-pattern {staged_files}
+      exclude:
+        - '**/eslint.config.js'
+        - '**/vite.config.ts'
+        # ここから下は生成物（.oxlintrc.json の ignorePatterns と対で維持する。冒頭のコメント参照）
+        - '**/routeTree.gen.ts'
+        - '**/worker-configuration.d.ts'
+      run: pnpm exec oxlint {staged_files}
       priority: 1
 
+    # packages/math は oxlint の対象外（.oxlintrc.json を持たない）ので eslint のみ。
+    # apps/web と違い exclude が要らないのは、生成物が置かれていないため
     eslint-math:
       root: 'packages/math/'
       glob: '**/*.{js,jsx,ts,tsx}'
@@ -41,7 +65,7 @@ pre-commit:
       run: pnpm exec stylelint --fix {staged_files}
       stage_fixed: true
       priority: 2
-      
+
     wrangler-types:
       glob: 'apps/web/wrangler.jsonc'
       run: pnpm --filter web typegen:cf && git add apps/web/worker-configuration.d.ts
