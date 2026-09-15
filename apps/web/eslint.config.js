@@ -79,6 +79,11 @@ export default [
   // React 関連の設定
   // ============================================
   {
+    // TypeScript ファイルにだけ適用する。ここで指定している @typescript-eslint/* のルールは
+    // tanstackConfig が .ts/.tsx 向けに登録したプラグインに依存しているため、
+    // files を省いて全ファイルに広げると .mjs などで
+    // 「plugin @typescript-eslint が見つからない」と言われて lint 自体が動かなくなる
+    files: ['**/*.{ts,tsx}'],
     plugins: {
       // import-x プラグインを明示的に登録（公式ドキュメント通りの記法で使えるようにする）
       // ※ TanStackの設定では 'import' としてエイリアスされているが、
@@ -230,6 +235,9 @@ export default [
   // TypeScript 厳格ルール
   // ============================================
   {
+    // @typescript-eslint/* は tanstackConfig が .ts/.tsx 向けに登録したプラグインに依存するため、
+    // 対象を絞らないと .mjs などで lint 自体が起動しなくなる
+    files: ['**/*.{ts,tsx}'],
     rules: {
       // -----------------------------------------
       // 型安全性の向上
@@ -300,6 +308,9 @@ export default [
 
       // async関数の戻り値の型を明示
       // '@typescript-eslint/promise-function-async': 'error',
+
+      // @deprecated としてマークされた API の利用を検出
+      '@typescript-eslint/no-deprecated': 'error',
     },
   },
 
@@ -359,8 +370,10 @@ export default [
       // ※ 開発中のデバッグ用途では除外可
       'no-alert': 'warn',
 
-      // console文を警告
-      // ※ サーバーサイドログ等では必要 → 除外可
+      // console.log を警告（warn/error/info は許可）
+      // ※ tanstackConfig は no-console を定義していないので、ここを消すと
+      //    apps/web 全体で console が無制限になる。下の緩和ブロックの
+      //    'no-console': 'off' も効かなくなるため、必ずここで有効化しておく
       'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
 
       // 不要なcatchの再スローを禁止
@@ -409,6 +422,8 @@ export default [
   // インポート関連の追加ルール
   // ============================================
   {
+    // import-x プラグインを登録しているオブジェクト（先頭の React 設定）と同じ範囲に揃える
+    files: ['**/*.{ts,tsx}'],
     rules: {
       // 自己インポートを禁止
       'import-x/no-self-import': 'error',
@@ -440,7 +455,6 @@ export default [
       '**/build/**',
       '**/.output/**',
       '**/.vinxi/**',
-      '**/migrations/**',
 
       // 依存関係
       '**/node_modules/**',
@@ -452,13 +466,10 @@ export default [
       // 生成されたファイル
       '**/*.generated.*',
       '**/routeTree.gen.ts',
-      '**/worker-configuration.d.ts',
+      'worker-configuration.d.ts',
 
       // Wrangler 生成ファイル
       '**/.wrangler/**',
-
-      // i18n
-      '**/apps/web/src/locales/**',
     ],
   },
 
@@ -476,6 +487,20 @@ export default [
   },
 
   // ============================================
+  // DB 運用スクリプト向けの緩和ルール
+  // ============================================
+  {
+    // Workers ではなく node（drizzle-kit）で直接動かす設定・CLI スクリプト。
+    // 出力先は端末であって Workers Logs ではないので、logger を通す意味がなく console が正しい。
+    // ※ 実在するディレクトリだけを列挙すること。存在しないパスを書いても
+    //    ESLint は何も言わずに無視するので、緩和が効いていないことに気付けない
+    files: ['src/db/config/**', 'src/db/lib/**'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+
+  // ============================================
   // テストファイル向けの緩和ルール
   // ============================================
   {
@@ -487,8 +512,6 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'off',
       // テストではconsoleを許可
       'no-console': 'off',
-      // テストではマジックナンバーを許可
-      'no-magic-numbers': 'off',
       // テストでは Array.from((_, i) => ...) などデータ生成用コールバックのネストを緩和
       'max-nested-callbacks': ['warn', { max: 4 }],
     },
