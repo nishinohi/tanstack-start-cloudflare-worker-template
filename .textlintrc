@@ -27,6 +27,7 @@
       },
       "sentence-length": false,
       "max-comma": false
-    }
+    },
+    "preset-ai-words-ja": true
   }
 }
