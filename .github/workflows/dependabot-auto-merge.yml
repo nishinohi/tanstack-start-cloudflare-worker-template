@@ -1,61 +1,38 @@
 name: Dependabot auto-merge
 
-on: pull_request_target
+# PR のコードは一切チェックアウト・実行しない（メタデータ取得と auto-merge 有効化のみ）ため、
+# pull_request_target でも信頼できないコードが特権付きで動くことはない。
+# Dependabot の PR では pull_request の GITHUB_TOKEN が読み取り専用になり
+# マージ操作ができないため、このトリガーが必要。
+on: pull_request_target # zizmor: ignore[dangerous-triggers]
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
-  check:
-    name: Check update type
+  auto-merge:
+    name: Enable auto-merge
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' || github.actor == 'app/dependabot'
-    outputs:
-      update-type: ${{ steps.metadata.outputs.update-type }}
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    permissions:
+      contents: write # auto-merge の有効化にはマージ権限が必要
+      pull-requests: write # PR のメタデータ取得と auto-merge の設定に必要
     steps:
       - name: Fetch Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v3
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  ci-and-merge:
-    name: CI and auto-merge
-    needs: check
-    runs-on: ubuntu-latest
-    if: |
-      needs.check.outputs.update-type == 'version-update:semver-patch' ||
-      needs.check.outputs.update-type == 'version-update:semver-minor'
-    steps:
-      - name: Checkout PR branch
-        uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: '24.x'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Test
-        run: pnpm test
-
-      - name: Rebase and merge PR
-        run: gh pr merge --rebase "$PR_URL"
+      # 必須ステータスチェック（CI ワークフロー）の通過後に GitHub 側でマージさせる
+      - name: Enable auto-merge for patch and minor updates
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
+          steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        run: gh pr merge --auto --rebase "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
