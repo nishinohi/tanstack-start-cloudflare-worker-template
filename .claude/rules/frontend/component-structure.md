@@ -1,7 +1,7 @@
 ---
 paths:
-  - "apps/web/src/components/**/*.{ts,tsx}"
-  - "apps/web/src/routes/**/*.{ts,tsx}"
+  - "apps/web/src/components/**/*.{ts,tsx,css}"
+  - "apps/web/src/routes/**/*.{ts,tsx,css}"
 ---
 
 ## Directory Structure

@@ -1,10 +1,27 @@
 ---
 paths:
-  - "apps/web/src/**/*.{tsx,css}"
+  - "apps/web/src/components/**/*.{tsx,css}"
+  - "apps/web/src/routes/**/*.{tsx,css}"
   - "packages/**/*.{tsx,css}"
 ---
 
 # Tailwind CSS Styling Rules
+
+## Conditional Styling with `cn`
+
+Always use the `cn` utility from `@/lib/utils` for conditional or merged class names. Never use string concatenation or ternary expressions that produce raw strings.
+
+```tsx
+import { cn } from '@/lib/utils'
+// ❌ NG: String concatenation / raw ternary
+<div className={"base-class " + (isActive ? "active" : "")} />
+<div className={`base-class ${isActive ? "active" : ""}`} />
+// ✅ OK: cn utility
+<div className={cn("base-class", isActive && "active")} />
+<div className={cn("base-class", { active: isActive, disabled: isDisabled })} />
+```
+
+This applies to all conditional, variant-based, or prop-driven class merging.
 
 ## Prohibition of Numeric Color Specifications
 
@@ -102,3 +119,16 @@ If existing colors are insufficient, add them to `apps/web/src/styles.css`:
   - However, ensure visibility in both light and dark modes
   - Prefer semantic colors when they can substitute
 - `transparent`, `current`, `inherit`: These keywords are allowed
+
+## Setup
+
+- Tailwind CSS v4, wired in through the `@tailwindcss/vite` plugin
+- Global styles and semantic color definitions: `apps/web/src/styles.css`
+- `cn()` and other helpers: `apps/web/src/lib/utils.ts`
+- Path alias `@/*` maps to `./src/*` (within `apps/web`)
+- shadcn/ui configuration: style `new-york`, base color `zinc`, CSS variables enabled, icons from `lucide-react`, component aliases `@/components` and `@/components/ui`
+
+```bash
+# Add a shadcn component (run from apps/web)
+cd apps/web && pnpm dlx shadcn@latest add <component-name>
+```
