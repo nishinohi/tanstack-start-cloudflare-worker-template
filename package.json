@@ -9,6 +9,7 @@
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
     "check": "pnpm -r check",
     "typegen:cf": "pnpm --filter web typegen:cf",
     "db:generate": "pnpm --filter web db:generate",
