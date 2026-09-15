@@ -33,7 +33,7 @@
     "db:drop:preview": "wrangler d1 execute tanstack-test-preview --env preview --local --file='./src/db/seed/drop-all-table.sql' --config=./wrangler.jsonc",
     "db:drop:dev": "wrangler d1 execute tanstack-test-develop --env develop --remote --file='./src/db/seed/drop-all-table.sql' --config=./wrangler.jsonc",
     "db:drop:stg": "wrangler d1 execute tanstack-test-staging --env staging --remote --file='./src/db/seed/drop-all-table.sql' --config=./wrangler.jsonc",
-    "db:drop:prod": "echo \"🔥 Be careful 🔥\\nYou can delete all tables by executing:\\n> wrangler d1 execute tanstack-test --remote --file='./src/db/seed/drop-all-table.sql' --config=./wrangler.jsonc\""
+    "db:drop:prod": "echo \"🔥 Be careful 🔥\\nYou can delete all tables by executing:\\n> wrangler d1 execute tanstack-test --env production --remote --file='./src/db/seed/drop-all-table.sql' --config=./wrangler.jsonc\""
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.38.0",

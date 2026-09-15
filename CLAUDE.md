@@ -163,7 +163,16 @@ export const Route = createFileRoute('/api/my-endpoint')({
 - Correct: `CLOUDFLARE_ENV=local pnpm dev`
 - Already configured in package.json scripts
 
-Five environments in `apps/web/wrangler.jsonc`: local, preview, develop, staging, production.
+Five environments in `apps/web/wrangler.jsonc`: local, preview, develop, staging, production. **All real settings live under `env.*` — including production.**
+
+The top-level config is the fallback used when no environment is specified, so it must never hold production settings. It is a guard block (`name: your-app-name-unconfigured`, nonexistent D1/KV IDs): building or deploying without `CLOUDFLARE_ENV`/`--env` targets that throwaway Worker and fails on the missing D1 instead of hitting production.
+
+Deploys must specify the environment on both the build and the deploy:
+
+```bash
+CLOUDFLARE_ENV=production pnpm build
+cd apps/web && pnpm exec wrangler deploy --env production
+```
 
 Automatic deployment via GitHub Actions (`.github/workflows/deploy.yml`):
 

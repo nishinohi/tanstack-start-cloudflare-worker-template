@@ -1,24 +1,30 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "your-app-name",
+
+  // ⚠️ トップレベルの設定は「環境未指定（--env / CLOUDFLARE_ENV なし）時のフォールバック」として使われる。
+  // ここに本番設定を置くと、環境指定を忘れた `wrangler deploy` や `vite build` がそのまま本番へ反映される。
+  // そのため、トップレベルには本番とは別名・存在しないリソース ID を持つガード用の設定だけを置き、
+  // 実際の環境設定はすべて `env` 配下に定義する（本番は `env.production`）。
+  // 環境未指定でデプロイしようとした場合は、存在しない D1 / KV を参照して失敗する。
+  "name": "your-app-name-unconfigured",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
   "vars": {
-    "ENVIRONMENT": "production",
-    "BASE_URL": "https://your-app-name.your-account.workers.dev",
+    "ENVIRONMENT": "unconfigured",
+    "BASE_URL": "http://localhost:3000",
   },
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "your-app-name",
-      "database_id": "00000000-1111-2222-3333-444444444444",
+      "database_name": "your-app-name-unconfigured",
+      "database_id": "00000000-0000-0000-0000-000000000000",
     },
   ],
   "kv_namespaces": [
     {
       "binding": "SESSION_KV",
-      "id": "01010101010101010101010101010101",
+      "id": "00000000000000000000000000000000",
     },
   ],
   "env": {
@@ -93,6 +99,26 @@
           "binding": "DB",
           "database_name": "your-app-name-staging",
           "database_id": "00000000-0000-0000-0000-000000000000",
+        },
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSION_KV",
+          "id": "01010101010101010101010101010101",
+        },
+      ],
+    },
+    "production": {
+      "name": "your-app-name",
+      "vars": {
+        "ENVIRONMENT": "production",
+        "BASE_URL": "https://your-app-name.your-account.workers.dev",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "your-app-name",
+          "database_id": "00000000-1111-2222-3333-444444444444",
         },
       ],
       "kv_namespaces": [
