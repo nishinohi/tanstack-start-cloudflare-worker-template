@@ -59,6 +59,17 @@ export const getAuth = createServerOnlyFn(() => {
         maxAge: 5 * 60,
       },
     },
+    advanced: {
+      ipAddress: {
+        // 既定の x-forwarded-for はクライアントが自分で書けるヘッダーで、Cloudflare は
+        // それを上書きせず自分の見た IP を「追記」する。つまり攻撃者が XFF を 1 行足すだけで
+        // 値が 2 個になり、Better Auth は多値の XFF を信用しない（trustedProxies 未設定なら
+        // `forwardedIps.length !== 1` で null）ので IP 不明に落ちる。
+        // cf-connecting-ip は Cloudflare がエッジで付け直すため詐称できない。
+        // レート制限のキーだけでなく session.ipAddress の記録にも効く
+        ipAddressHeaders: ['cf-connecting-ip'],
+      },
+    },
     // enabled の Better Auth デフォルトは process.env.NODE_ENV 依存のため、環境変数から明示的に決定する
     // NOTE: storage 未指定のため 'memory'（isolate ローカル）で動作する。Workers では isolate を跨いで
     // カウントが共有されないため制限は厳密には効かない。永続化先（D1 等）は別途検討する
