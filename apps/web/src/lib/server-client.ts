@@ -80,6 +80,7 @@ export const getAuth = createServerOnlyFn(() => {
       google: {
         clientId: env.CLIENT_ID,
         clientSecret: env.CLIENT_SECRET,
+        prompt: 'select_account',
       },
     },
   }) as Auth
