@@ -52,7 +52,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      {/*
+        ブラウザ拡張（ColorZilla の cz-shortcut-listen など）が React の hydration 前に
+        body へ属性を注入するため mismatch 警告が出る。suppressHydrationWarning は
+        "one level deep"、つまり body 自身の属性と直下のテキストにしか効かないため、
+        子要素の hydration mismatch は引き続き検出される
+      */}
+      <body suppressHydrationWarning>
         <Header />
         {children}
         <Scripts />
