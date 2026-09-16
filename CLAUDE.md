@@ -83,7 +83,7 @@ The query client is passed through router context (type: `MyRouterContext`).
 `apps/web/src/lib/server-client.ts` provides cached server-only instances using `createServerOnlyFn`:
 
 - `getDb()` — Returns a cached `DrizzleD1Database` instance (isolate-scoped)
-- `getAuth()` — Returns a cached `betterAuth` instance with Google OAuth and KV session storage
+- `getAuth()` — Returns a cached `betterAuth` instance with Google OAuth and D1 session storage
 
 These are the **canonical way** to access DB and Auth. Do not call `drizzle(env.DB)` directly.
 
@@ -92,7 +92,8 @@ These are the **canonical way** to access DB and Auth. Do not call `drizzle(env.
 - Auth instance: `getAuth()` from `apps/web/src/lib/server-client.ts`
 - Auth schema: `apps/web/src/db/schema/auth.ts`
 - Auth client: `apps/web/src/lib/auth-client.ts`
-- Session storage: Cloudflare KV via `SESSION_KV` binding
+- Session storage: Cloudflare D1 (`session` table) via the Drizzle adapter — no secondary storage
+- Rate limit storage: in-memory (isolate-local), so counts are not shared across isolates on Workers
 - OAuth provider: Google (`CLIENT_ID`, `CLIENT_SECRET` env vars)
 - `BASE_URL`: Set per environment in `apps/web/wrangler.jsonc`
 
@@ -165,7 +166,7 @@ export const Route = createFileRoute('/api/my-endpoint')({
 
 Five environments in `apps/web/wrangler.jsonc`: local, preview, develop, staging, production. **All real settings live under `env.*` — including production.**
 
-The top-level config is the fallback used when no environment is specified, so it must never hold production settings. It is a guard block (`name: your-app-name-unconfigured`, nonexistent D1/KV IDs): building or deploying without `CLOUDFLARE_ENV`/`--env` targets that throwaway Worker and fails on the missing D1 instead of hitting production.
+The top-level config is the fallback used when no environment is specified, so it must never hold production settings. It is a guard block (`name: your-app-name-unconfigured`, a nonexistent D1 ID): building or deploying without `CLOUDFLARE_ENV`/`--env` targets that throwaway Worker and fails on the missing D1 instead of hitting production.
 
 Deploys must specify the environment on both the build and the deploy:
 
@@ -185,8 +186,7 @@ Environment variables (`vars` in `wrangler.jsonc`):
 
 Cloudflare bindings:
 
-- `DB` (D1 Database): Data persistence
-- `SESSION_KV` (KV Namespace): Session management
+- `DB` (D1 Database): Data persistence and session management
 
 Secret bindings (set via `.dev.vars`):
 

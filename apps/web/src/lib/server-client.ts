@@ -46,8 +46,9 @@ export const getAuth = createServerOnlyFn(() => {
     database: drizzleAdapter(db, {
       provider: 'sqlite',
     }),
-    // Better Auth のデフォルトは process.env.NODE_ENV 依存のため、環境変数から明示的に決定する
-    // storage は secondaryStorage 指定時に自動で 'secondary-storage'（KV）となり、isolate を跨いで機能する
+    // enabled の Better Auth デフォルトは process.env.NODE_ENV 依存のため、環境変数から明示的に決定する
+    // NOTE: storage 未指定のため 'memory'（isolate ローカル）で動作する。Workers では isolate を跨いで
+    // カウントが共有されないため制限は厳密には効かない。永続化先（D1 等）は別途検討する
     rateLimit: {
       enabled: env.ENVIRONMENT !== 'local',
     },
@@ -55,23 +56,6 @@ export const getAuth = createServerOnlyFn(() => {
       google: {
         clientId: env.CLIENT_ID,
         clientSecret: env.CLIENT_SECRET,
-      },
-    },
-    secondaryStorage: {
-      get: async (key) => {
-        const value = await env.SESSION_KV.get(key)
-        return value
-      },
-      set: async (key, value, ttl) => {
-        // ttl は Better Auth が計算した値（デフォルト: 7日間 = session.expiresIn || 604800）
-        if (ttl) {
-          await env.SESSION_KV.put(key, value, { expirationTtl: ttl })
-          return
-        }
-        await env.SESSION_KV.put(key, value)
-      },
-      delete: async (key) => {
-        await env.SESSION_KV.delete(key)
       },
     },
   }) as Auth
