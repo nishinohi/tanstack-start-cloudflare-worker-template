@@ -36,7 +36,7 @@ export function UserMenu() {
 
   if (!session) {
     return (
-      <Button onClick={() => navigate({ to: '/login' })} variant="outline" size="sm">
+      <Button onClick={() => navigate({ to: '/login' })} size="sm">
         ログイン
       </Button>
     )
