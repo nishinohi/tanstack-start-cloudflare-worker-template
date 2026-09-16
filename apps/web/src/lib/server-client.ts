@@ -46,6 +46,11 @@ export const getAuth = createServerOnlyFn(() => {
     database: drizzleAdapter(db, {
       provider: 'sqlite',
     }),
+    // Better Auth のデフォルトは process.env.NODE_ENV 依存のため、環境変数から明示的に決定する
+    // storage は secondaryStorage 指定時に自動で 'secondary-storage'（KV）となり、isolate を跨いで機能する
+    rateLimit: {
+      enabled: env.ENVIRONMENT !== 'local',
+    },
     socialProviders: {
       google: {
         clientId: env.CLIENT_ID,
