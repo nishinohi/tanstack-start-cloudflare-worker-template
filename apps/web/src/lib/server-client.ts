@@ -42,7 +42,7 @@ export const getAuth = createServerOnlyFn(() => {
 
   const auth = betterAuth({
     secret: env.SESSION_SECRET,
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: env.BASE_URL,
     database: drizzleAdapter(db, {
       provider: 'sqlite',
     }),
