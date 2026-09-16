@@ -12,4 +12,5 @@ export const env = {
   CLIENT_ID: 'test-client-id',
   CLIENT_SECRET: 'test-client-secret',
   ENVIRONMENT: 'test',
+  NODE_ENV: 'test',
 }

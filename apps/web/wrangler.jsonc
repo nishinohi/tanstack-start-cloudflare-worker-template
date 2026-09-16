@@ -10,9 +10,13 @@
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
+  // NODE_ENV は nodejs_compat + compatibility_date >= 2025-04-01 により process.env へ反映される。
+  // better-auth をはじめ process.env.NODE_ENV で本番判定を行うライブラリがあるため、環境ごとに明示する
+  // （Workers ランタイムは NODE_ENV を自動設定しないため、未指定だと常に development 扱いになる）。
   "vars": {
     "ENVIRONMENT": "unconfigured",
     "BASE_URL": "http://localhost:3000",
+    "NODE_ENV": "development",
   },
   "d1_databases": [
     {
@@ -33,6 +37,7 @@
       "vars": {
         "ENVIRONMENT": "local",
         "BASE_URL": "http://localhost:3000",
+        "NODE_ENV": "development",
       },
       "d1_databases": [
         {
@@ -53,6 +58,8 @@
       "vars": {
         "ENVIRONMENT": "preview",
         "BASE_URL": "http://localhost:4173",
+        // 本番ビルドをローカルで検証する環境のため production 相当にする
+        "NODE_ENV": "production",
       },
       "d1_databases": [
         {
@@ -73,6 +80,7 @@
       "vars": {
         "ENVIRONMENT": "develop",
         "BASE_URL": "https://your-app-name-develop.tomoya0209.workers.dev",
+        "NODE_ENV": "production",
       },
       "d1_databases": [
         {
@@ -93,6 +101,7 @@
       "vars": {
         "ENVIRONMENT": "staging",
         "BASE_URL": "https://your-app-name-staging.tomoya0209.workers.dev",
+        "NODE_ENV": "production",
       },
       "d1_databases": [
         {
@@ -113,6 +122,7 @@
       "vars": {
         "ENVIRONMENT": "production",
         "BASE_URL": "https://your-app-name.your-account.workers.dev",
+        "NODE_ENV": "production",
       },
       "d1_databases": [
         {
