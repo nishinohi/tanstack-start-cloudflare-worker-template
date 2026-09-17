@@ -1,5 +1,6 @@
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { drizzle } from 'drizzle-orm/d1'
 import { env } from 'cloudflare:workers'
 import { createServerOnlyFn } from '@tanstack/react-start'
@@ -23,24 +24,8 @@ export const getDb = createServerOnlyFn(() => {
   return cachedDb
 })
 
-/**
- * Batter Auth インスタンスをキャッシュして返す
- *
- * Cloudflare Workers の isolate スコープでキャッシュされるため、
- * 同じ isolate 内の複数リクエストで再利用される
- *
- * @returns Better Auth インスタンス
- */
-type Auth = ReturnType<typeof betterAuth>
-
-let cachedAuth: Auth | null = null
-
-export const getAuth = createServerOnlyFn(() => {
-  if (cachedAuth) return cachedAuth
-
-  const db = getDb()
-
-  const auth = betterAuth({
+const createAuth = (db: DrizzleD1Database<typeof schema>) =>
+  betterAuth({
     secret: env.SESSION_SECRET,
     baseURL: env.BASE_URL,
     database: drizzleAdapter(db, {
@@ -87,7 +72,31 @@ export const getAuth = createServerOnlyFn(() => {
         prompt: 'select_account',
       },
     },
-  }) as Auth
-  cachedAuth = auth
-  return auth
+    // サーバー関数や SSR から auth.api.* を直接呼ぶと、Better Auth が積んだ Set-Cookie は
+    // 戻り値に乗らず捨てられる（getSession による Cookie キャッシュの再発行・セッション延長・
+    // 無効 Cookie の削除など）。このプラグインが TanStack Start の setCookie へ転送する。
+    // /api/auth ハンドラ経由のリクエストはレスポンスに直接載るため対象外になる。
+    // 後続プラグインの after フックが積んだ Cookie を取りこぼさないよう、必ず配列の末尾に置く
+    plugins: [tanstackStartCookies()],
+  })
+
+// 汎用の ReturnType<typeof betterAuth> にキャストすると plugins 由来の型推論が失われるため、
+// 実際のオプションから推論した型を使う
+type Auth = ReturnType<typeof createAuth>
+
+/**
+ * Batter Auth インスタンスをキャッシュして返す
+ *
+ * Cloudflare Workers の isolate スコープでキャッシュされるため、
+ * 同じ isolate 内の複数リクエストで再利用される
+ *
+ * @returns Better Auth インスタンス
+ */
+let cachedAuth: Auth | null = null
+
+export const getAuth = createServerOnlyFn(() => {
+  if (!cachedAuth) {
+    cachedAuth = createAuth(getDb())
+  }
+  return cachedAuth
 })
