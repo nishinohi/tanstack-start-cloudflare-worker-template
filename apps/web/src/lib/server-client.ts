@@ -56,7 +56,7 @@ export const getAuth = createServerOnlyFn(() => {
       // 即時性が必要な参照では getSession に disableCookieCache: true を渡す
       cookieCache: {
         enabled: true,
-        maxAge: 5 * 60,
+        maxAge: 3 * 60,
       },
     },
     advanced: {
