@@ -93,7 +93,7 @@ These are the **canonical way** to access DB and Auth. Do not call `drizzle(env.
 - Auth schema: `apps/web/src/db/schema/auth.ts`
 - Auth client: `apps/web/src/lib/auth-client.ts`
 - Session storage: Cloudflare D1 (`session` table) via the Drizzle adapter — no secondary storage
-- Session cookie cache: enabled with `maxAge: 5 * 60`. While the cache is valid, `getSession` does not read D1 at all, so out-of-band revocation (`revokeSession`, admin force-logout, direct D1 edits) takes up to 5 minutes to propagate. The user's own sign-in/sign-out/`updateUser` refresh the cookie and apply immediately. Pass `disableCookieCache: true` where freshness matters
+- Session cookie cache: enabled with `maxAge: 3 * 60`. While the cache is valid, `getSession` does not read D1 at all, so out-of-band revocation (`revokeSession`, admin force-logout, direct D1 edits) takes up to 3 minutes to propagate. The user's own sign-in/sign-out/`updateUser` refresh the cookie and apply immediately. Pass `disableCookieCache: true` where freshness matters
 - OAuth provider: Google (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` env vars)
 
 - `BASE_URL`: Set per environment in `apps/web/wrangler.jsonc`
