@@ -60,6 +60,10 @@ export const getAuth = createServerOnlyFn(() => {
       },
     },
     advanced: {
+      // 未指定だと baseURL のスキームで決まり、baseURL が空なら isProduction（NODE_ENV === 'production'）に
+      // 落ちる。Worker には NODE_ENV が無いので、そこに落ちると本番でも Secure が外れる。
+      // http://localhost で動かす環境だけを列挙して外し、それ以外（未知の値を含む）は Secure に倒す
+      useSecureCookies: env.ENVIRONMENT !== 'local' && env.ENVIRONMENT !== 'preview',
       ipAddress: {
         // 既定の x-forwarded-for はクライアントが自分で書けるヘッダーで、Cloudflare は
         // それを上書きせず自分の見た IP を「追記」する。つまり攻撃者が XFF を 1 行足すだけで
