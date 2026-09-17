@@ -78,8 +78,8 @@ export const getAuth = createServerOnlyFn(() => {
     },
     socialProviders: {
       google: {
-        clientId: env.CLIENT_ID,
-        clientSecret: env.CLIENT_SECRET,
+        clientId: env.GOOGLE_CLIENT_ID,
+        clientSecret: env.GOOGLE_CLIENT_SECRET,
         prompt: 'select_account',
       },
     },
